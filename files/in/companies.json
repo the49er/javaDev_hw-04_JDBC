@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "GameSoft",
+    "specialization": "Game Software"
+  },
+  {
+    "id": 2,
+    "name": "iNet Security",
+    "specialization": "Web Security"
+  },
+  {
+    "id": 3,
+    "name": "Global Link",
+    "specialization": "Networks"
+  },
+  {
+    "id": 4,
+    "name": "Soft Group",
+    "specialization": "Enterprise Solutions"
+  }
+]

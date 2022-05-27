@@ -1,0 +1,5 @@
+{
+  "dbUrl": "jdbc:mysql://localhost:3306/homework_4",
+  "dbUserTest": "test_user",
+  "dbUserTest_pass": "password"
+}
