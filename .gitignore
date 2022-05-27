@@ -1,6 +1,7 @@
 ### IntelliJ IDEA ###
 .idea
 out/
+target
 
 ### files ###
 MIRO_JDBC.txt
