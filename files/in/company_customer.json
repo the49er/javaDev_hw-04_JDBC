@@ -1,0 +1,18 @@
+[
+  {
+    "companyId": 1,
+    "customerId": 4
+  },
+  {
+    "companyId": 2,
+    "customerId": 3
+  },
+  {
+    "companyId": 3,
+    "customerId": 1
+  },
+  {
+    "companyId": 4,
+    "customerId": 2
+  }
+]

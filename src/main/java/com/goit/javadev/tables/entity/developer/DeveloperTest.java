@@ -1,12 +1,9 @@
-package com.goit.javadev.entity.developer;
+package com.goit.javadev.tables.entity.developer;
 
 import com.goit.javadev.feature.storage.Storage;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import static com.goit.javadev.entity.developer.Developer.Gender.male;
-import static com.goit.javadev.entity.developer.Developer.Gender.other;
 
 public class DeveloperTest {
     public static void main(String[] args) throws SQLException {
@@ -15,11 +12,23 @@ public class DeveloperTest {
         String jsonFileCompIn = "files/in/developers.json";
         String jsonFileCompOut = "files/out/developers.json";
         DeveloperDaoService developerDbService = new DeveloperDaoService(connection);
+
+//        developerDbService.getEntityById(1);
+//        System.out.println(developerDbService.getEntityById(1));
+//        List<Developer> fieldLike = developerDbService.getAllEntities();
+//        System.out.println(fieldLike.size());
+//        fieldLike.stream()
+//                .forEach(System.out::println);
+//
+//        List<Developer> list = developerDbService.getDeveloperBySpecificFieldLike("I");
+//        list.stream()
+//                .forEach(System.out::println);
+//        System.out.println(list.size());
 //        developerDbService.createNewDevelopersFromJsonFile(jsonFileCompIn);
 //        Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
-        Developer developerYura = new Developer(1, "Yura", 23, other, 3750, 1);
-        developerDbService.updateAllFieldsOfDeveloperById(developerYura, 1);
-        System.out.println(developerDbService.updateAllFieldsOfDeveloperById(developerYura, 1));
+//        Developer developerYura = new Developer(1, "Ivan", 23, other, 3750, 1);
+//        developerDbService.updateAllFieldsOfDeveloperById(developerYura, 1);
+//        System.out.println(developerDbService.updateAllFieldsOfDeveloperById(developerYura, 1));
 //        List<Developer> developers = new ArrayList<>();
 //        developers.add(new Developer(1, "Vitaly", 25, "male", 3500, 1));
 //        developers.add(new Developer(2, "Irina", 31, "female", 3400, 2));

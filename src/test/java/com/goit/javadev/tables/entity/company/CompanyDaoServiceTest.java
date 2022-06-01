@@ -1,16 +1,14 @@
-package com.goit.javadev.entity.company;
+package com.goit.javadev.tables.entity.company;
 
-import com.goit.javadev.feature.prefs.Config;
-import com.goit.javadev.feature.storage.DataBaseInitService;
-import com.goit.javadev.feature.storage.Storage;
-import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 
 public class CompanyDaoServiceTest {
     private Connection connection;
@@ -18,14 +16,13 @@ public class CompanyDaoServiceTest {
 
     @BeforeEach
     public void beforeEach () throws SQLException {
-        Config config = new Config();
-        Storage storage = Storage.getInstance();
-        final String connectionUrl = config.getString(Config.DB_JDBC_CONNECTION_URL);
-        final String user = config.getString(Config.DB_JDBC_USER_PASSWORD_1);
-        final String password = config.getString(Config.DB_JDBC_USER_PASSWORD_1);
-        new DataBaseInitService().initDbFlyWay(storage);
-        connection = storage.getConnection();
-        connection.setAutoCommit(false);
+        final String jdbc = "jdbc:h2:mem:./testDataBase;DB_CLOSE_DELAY=-1";
+        String sqlCreateDataBase = "CREATE SCHEMA `homework_4`";
+        String sqlCreateTableCompany = "CREATE TABLE `homework_4`.companies (" +
+                "id IDENTITY PRIMARY KEY, name VARCHAR(100), specialization VARCHAR(100))";
+        connection = DriverManager.getConnection(jdbc);
+        connection.createStatement().executeUpdate(sqlCreateDataBase);
+        connection.createStatement().executeUpdate(sqlCreateTableCompany);
         companyDaoService = new CompanyDaoService(connection);
         companyDaoService.clearTable();
     }
@@ -38,7 +35,7 @@ public class CompanyDaoServiceTest {
     @Test
     public void testThatCompanyCreated() throws SQLException {
         Company companyTest = new Company(1, "TestCompany", "UnitTest");
-        long id = companyDaoService.createNewCompany(companyTest);
+        long id = companyDaoService.insertNewCompany(companyTest);
         Company createdCompany = companyDaoService.getCompanyById(id);
 
         Assertions.assertEquals(1, createdCompany.getId());

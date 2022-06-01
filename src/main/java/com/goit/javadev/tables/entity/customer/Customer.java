@@ -1,10 +1,9 @@
-package com.goit.javadev.entity.company;
+package com.goit.javadev.tables.entity.customer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Data
@@ -12,9 +11,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-class Company{
+public class Customer {
     long id;
     String name;
-    String specialization;
-
+    String businessSphere;
 }

@@ -1,4 +1,4 @@
-package com.goit.javadev.entity.developer;
+package com.goit.javadev.tables.entity.developer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +24,4 @@ public class Developer {
         female,
         other
     }
-
 }

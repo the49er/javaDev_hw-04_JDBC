@@ -1,7 +1,8 @@
-package com.goit.javadev.entity.company;
+package com.goit.javadev.tables.entity.company;
 
-import com.goit.javadev.feature.storage.Storage;
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,9 +14,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class CompanyDaoService {
     private PreparedStatement insertSt;
     private PreparedStatement clearSt;
+    private PreparedStatement deleteById;
     private PreparedStatement selectMaxIdSt;
     private PreparedStatement getById;
 
@@ -30,12 +33,16 @@ public class CompanyDaoService {
                 "DELETE FROM `homework_4`.companies"
         );
 
+        deleteById = connection.prepareStatement(
+                "DELETE FROM `homework_4`.companies WHERE id = ?"
+        );
+
         selectMaxIdSt = connection.prepareStatement(
                 "SELECT max(id) AS maxId FROM `homework_4`.companies"
         );
 
         getById = connection.prepareStatement(
-                "SELECT id FROM `homework_4`.companies"
+                "SELECT id, name, specialization FROM `homework_4`.companies WHERE id = ?"
         );
     }
 
@@ -43,13 +50,19 @@ public class CompanyDaoService {
         clearSt.executeUpdate();
     }
 
-    public long createNewCompany(Company company) throws SQLException {
-            insertSt.setString(1, company.getName());
-            insertSt.setString(2, company.getSpecialization());
-            insertSt.executeUpdate();
+    public void deleteCompanyById(long id) throws SQLException {
+        deleteById.setLong(1, id);
+        deleteById.executeUpdate();
+        log.info("company by id: " + id + " has been deleted");
+    }
+
+    public long insertNewCompany(Company company) throws SQLException {
+        insertSt.setString(1, company.getName());
+        insertSt.setString(2, company.getSpecialization());
+        insertSt.executeUpdate();
         long id;
 
-        try(ResultSet rs = selectMaxIdSt.executeQuery()) {
+        try (ResultSet rs = selectMaxIdSt.executeQuery()) {
             rs.next();
             id = rs.getLong("maxId");
         }
@@ -59,22 +72,20 @@ public class CompanyDaoService {
     public Company getCompanyById(long id) throws SQLException {
         getById.setLong(1, id);
 
-        try(ResultSet rs = getById.executeQuery()) {
-            if(!rs.next()){
+        try (ResultSet rs = getById.executeQuery()) {
+            if (!rs.next()) {
                 return null;
             }
             Company company = new Company();
             company.setId(id);
             company.setName(rs.getNString("name"));
-            company.setSpecialization("specialization");
+            company.setSpecialization(rs.getNString("specialization"));
 
             return company;
         }
-
-
     }
 
-    public void createNewCompaniesFromJsonFile(String jsonFilePath) throws SQLException {
+    public void insertNewCompaniesFromJsonFile(String jsonFilePath) throws SQLException {
         Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
         String inString = "";
         try {

@@ -1,10 +1,12 @@
 package com.goit.javadev;
 
-import com.goit.javadev.entity.company.CompanyDaoService;
-import com.goit.javadev.entity.developer.DeveloperDaoService;
-import com.goit.javadev.feature.prefs.Config;
+import com.goit.javadev.tables.entity.company.CompanyDaoService;
+import com.goit.javadev.tables.entity.customer.CustomerDaoService;
+import com.goit.javadev.tables.entity.developer.DeveloperDaoService;
+import com.goit.javadev.tables.entity.project.ProjectDaoService;
 import com.goit.javadev.feature.storage.DataBaseInitService;
 import com.goit.javadev.feature.storage.Storage;
+import com.goit.javadev.tables.manytomany.companycustomer.CompanyCustomerDaoService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -14,6 +16,10 @@ public class AppConnectionDemoTest {
 
         String companiesJsonFileIn = "files/in/companies.json"; //companies
         String developersJsonFileIn = "files/in/developers.json"; // developers
+        String projectsJsonFileIn = "files/in/projects.json"; // projects
+        String customersJsonFileIn = "files/in/customers.json"; // customers
+        String compCustomersJsonFileIn = "files/in/company_customer.json"; // company_customer
+
         //DataBaseInitialisation
         Storage storage = Storage.getInstance();
         Connection connection = storage.getConnection();
@@ -21,11 +27,22 @@ public class AppConnectionDemoTest {
 
         //population of companies_table
         CompanyDaoService companyDbService = new CompanyDaoService(connection);
-        companyDbService.createNewCompaniesFromJsonFile(companiesJsonFileIn);
+        companyDbService.insertNewCompaniesFromJsonFile(companiesJsonFileIn);
 
         //population of developers_table
         DeveloperDaoService developerDbService = new DeveloperDaoService(connection);
-        developerDbService.createNewDevelopersFromJsonFile(developersJsonFileIn);
+        developerDbService.insertNewDevelopersFromJsonFile(developersJsonFileIn);
+
+        //population of customers_table
+        CustomerDaoService customerDaoService = new CustomerDaoService(connection);
+        customerDaoService.insertNewEntitiesFromJsonFile(customersJsonFileIn);
+
+        //population of projects_table
+        ProjectDaoService projectDaoService = new ProjectDaoService(connection);
+        projectDaoService.insertNewProjectsFromJsonFile(projectsJsonFileIn);
+
+        CompanyCustomerDaoService companyCustomerDaoService = new CompanyCustomerDaoService(connection);
+
 
         //CompanyDbService companyDbService = new CompanyDbService(storage);
         //companyDbService.createNewCompaniesFromJsonFile(jsonFileCompIn);
