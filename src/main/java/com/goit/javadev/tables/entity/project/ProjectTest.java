@@ -5,6 +5,9 @@ import com.google.gson.Gson;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectTest {
     public static void main(String[] args) throws SQLException {
@@ -15,14 +18,15 @@ public class ProjectTest {
         ProjectDaoService projectDaoService = new ProjectDaoService(connection);
         Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
 
-        projectDaoService.insertNewProjectsFromJsonFile(jsonFileCompIn);
+
 
 //        List<Project> project = new ArrayList<>();
 //        project.add(new Project(1, "CRM", "Customer Relationship Management", LocalDate.parse("2021-01-24"), 1, 4));
-//        project.add(new Project(2, "ERP", "Enterprise Resource Planning", LocalDate.of(2022, 4, 12), 2, 3));
-//        project.add(new Project(3, "SCM", "Software Configuration Management", LocalDate.of(2019, 5, 30), 3, 2));
+////        project.add(new Project(2, "ERP", "Enterprise Resource Planning", LocalDate.of(2022, 4, 12), 2, 3));
+////        project.add(new Project(3, "SCM", "Software Configuration Management", LocalDate.of(2019, 5, 30), 3, 2));
 //        project.add(new Project(4, "HMC", "Human Capital Management", LocalDate.of(2020, 9, 16), 4, 1));
-//
+//        projectDaoService.insertNewEntities(project);
+        System.out.println(projectDaoService.getEntityById(1));
 //        LocalDate date = LocalDate.of(2022, 04, 12);
 //        String js = gson.toJson(date);
 //        System.out.println(js);

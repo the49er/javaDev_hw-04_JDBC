@@ -1,5 +1,7 @@
 package com.goit.javadev.tables.entity.developer;
 
+import com.goit.javadev.exception.DaoException;
+import com.goit.javadev.tables.entity.crudEntityDAO;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,80 +18,91 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class DeveloperDaoService {
+public class DeveloperDaoService implements crudEntityDAO<Developer> {
 
     private static final String TABLE_NAME = "`homework_4`.developers";
-    private PreparedStatement insertSt;
-    private PreparedStatement updateEntityFieldsSt;
-    private PreparedStatement updateNameFieldSt;
-    private PreparedStatement getEntityByIdSt;
-    private PreparedStatement getBySpecificFieldLikeSt;
-    private PreparedStatement getAllEntitiesSt;
-    private PreparedStatement deleteById;
-    private PreparedStatement clearTableSt;
+    PreparedStatement insertSt;
+    PreparedStatement updateEntityFieldsSt;
+    PreparedStatement updateNameFieldSt;
+    PreparedStatement getEntityByIdSt;
+    PreparedStatement getBySpecificFieldLikeSt;
+    PreparedStatement getAllEntitiesSt;
+    PreparedStatement deleteById;
+    PreparedStatement clearTableSt;
     private PreparedStatement getMaxIdSt;
 
 
-    public DeveloperDaoService(Connection connection) throws SQLException {
+    public DeveloperDaoService(Connection connection) {
+        try {
 
-        getMaxIdSt = connection.prepareStatement(
-                "SELECT max(id) AS maxId FROM " + TABLE_NAME
-        );
+            getMaxIdSt = connection.prepareStatement(
+                    "SELECT max(id) AS maxId FROM " + TABLE_NAME
+            );
 
-        insertSt = connection.prepareStatement(
-                "INSERT INTO " + TABLE_NAME + " (name, age, gender, " +
-                        "salary, company_id) VALUES (?, ?, ?, ?, ?)"
-        );
+            insertSt = connection.prepareStatement(
+                    "INSERT INTO " + TABLE_NAME + " (name, age, gender, " +
+                            "salary, company_id) VALUES (?, ?, ?, ?, ?)"
+            );
 
-        updateEntityFieldsSt = connection.prepareStatement(
-                "UPDATE " + TABLE_NAME + " SET name = ?, age = ?, " +
-                        "gender = ?, salary = ?, company_id = ? WHERE id = ?"
-        );
+            updateEntityFieldsSt = connection.prepareStatement(
+                    "UPDATE " + TABLE_NAME + " SET name = ?, age = ?, " +
+                            "gender = ?, salary = ?, company_id = ? WHERE id = ?"
+            );
 
-        updateNameFieldSt = connection.prepareStatement(
-                "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?"
-        );
+            updateNameFieldSt = connection.prepareStatement(
+                    "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?"
+            );
 
-        getEntityByIdSt = connection.prepareStatement(
-                "SELECT id, name, age, gender, salary, company_id FROM " +
-                        TABLE_NAME + " WHERE id = ?"
-        );
+            getEntityByIdSt = connection.prepareStatement(
+                    "SELECT id, name, age, gender, salary, company_id FROM " +
+                            TABLE_NAME + " WHERE id = ?"
+            );
 
-        getBySpecificFieldLikeSt = connection.prepareStatement(
-                "SELECT id, name, age, gender, salary, company_id FROM " +
-                        TABLE_NAME + " WHERE name LIKE ?"
-        );
+            getBySpecificFieldLikeSt = connection.prepareStatement(
+                    "SELECT id, name, age, gender, salary, company_id FROM " +
+                            TABLE_NAME + " WHERE name LIKE ?"
+            );
 
-        getAllEntitiesSt = connection.prepareStatement(
-                "SELECT id, name, age, gender, salary, company_id FROM " + TABLE_NAME
-        );
+            getAllEntitiesSt = connection.prepareStatement(
+                    "SELECT id, name, age, gender, salary, company_id FROM " + TABLE_NAME
+            );
 
-        deleteById = connection.prepareStatement(
-          "DELETE FROM " + TABLE_NAME + " WHERE ID = ?"
-        );
+            deleteById = connection.prepareStatement(
+                    "DELETE FROM " + TABLE_NAME + " WHERE ID = ?"
+            );
 
-        clearTableSt = connection.prepareStatement(
-                "DELETE FROM " + TABLE_NAME
-        );
+            clearTableSt = connection.prepareStatement(
+                    "DELETE FROM " + TABLE_NAME
+            );
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
-    public int deleteEntitiesFromListById (long[] ids) throws SQLException {
+    @Override
+    public int deleteEntitiesFromListById(long[] ids) {
         int result = 0;
-        for (long id: ids) {
-            deleteById.setLong(1, id);
-            deleteById.addBatch();
-            result++;
+        try {
+            for (long id : ids) {
+                deleteById.setLong(1, id);
+                deleteById.addBatch();
+                result++;
+            }
+            deleteById.executeBatch();
+            if (ids.length > 1) {
+                log.info("Attention! " + ids.length + " records were deleted");
+            } else if (ids.length == 1) {
+                log.info("Attention! " + ids.length + " record was deleted");
+            }
+            return result;
+        }catch (DaoException | SQLException e){
+            e.printStackTrace();
+            return -1;
         }
-        deleteById.executeBatch();
-        if (ids.length > 1) {
-            log.info("Attention! " + ids.length + " records were deleted");
-        } else if (ids.length == 1) {
-            log.info("Attention! " + ids.length + " record was deleted");
-        }
-        return result;
     }
 
-    public boolean deleteById (long id) throws SQLException {
+    @Override
+    public boolean deleteById(long id) {
         try {
             deleteById.setLong(1, id);
             deleteById.executeUpdate();
@@ -101,29 +114,44 @@ public class DeveloperDaoService {
         return false;
     }
 
+    @Override
+    public long insertNewEntity(Developer developer) {
+        try  {
+            insertSt.setString(1, developer.getName());
+            insertSt.setInt(2, developer.getAge());
+            insertSt.setString(3, developer.getGender().name());
+            insertSt.setInt(4, developer.getSalary());
+            insertSt.setInt(5, developer.getCompanyId());
+            insertSt.executeUpdate();
 
-    public long insertNewEntity(Developer developer) throws SQLException {
-        insertSt.setString(1, developer.getName());
-        insertSt.setInt(2, developer.getAge());
-        insertSt.setString(3, developer.getGender().name());
-        insertSt.setInt(4, developer.getSalary());
-        insertSt.setInt(5, developer.getCompanyId());
-        insertSt.executeUpdate();
-
-        long id;
+        } catch (DaoException | SQLException exception) {
+            exception.printStackTrace();
+        }
+        long id = 0;
         try (ResultSet rs = getMaxIdSt.executeQuery()) {
-            rs.next();
-            id = rs.getLong("maxId");
+            while (rs.next()) {
+                id = rs.getLong("maxId");
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
         }
         return id;
     }
 
-    public void clearTable() throws SQLException {
-        clearTableSt.executeUpdate();
-        log.info(TABLE_NAME + " has been cleared");
+    @Override
+    public boolean clearTable() {
+        try {
+            clearTableSt.executeUpdate();
+            log.info(TABLE_NAME + " has been cleared");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    public int insertNewDevelopersFromJsonFile(String jsonFilePath) throws SQLException {
+    @Override
+    public int insertEntitiesFromJsonFile(String jsonFilePath) {
         Gson gson = new Gson();
         String inString = null;
         try {
@@ -138,7 +166,7 @@ public class DeveloperDaoService {
                 Arrays.stream(developers)
                         .collect(Collectors.toList());
 
-        createDeveloperFromList(developerList);
+        insertNewEntities(developerList);
         if (developerList.size() > 1) {
             log.info("Created " + developerList.size() + " new records from JSON");
         } else if (developerList.size() == 1) {
@@ -147,33 +175,39 @@ public class DeveloperDaoService {
         return developerList.size();
     }
 
-    public int createDeveloperFromList(List<Developer> developerList) throws SQLException {
-        for (int i = 0; i < developerList.size(); i++) {
+    @Override
+    public int insertNewEntities(List<Developer> developerList) {
+        try {
+            for (int i = 0; i < developerList.size(); i++) {
 
-            String name = developerList.get(i).getName();
-            int age = developerList.get(i).getAge();
-            String gender = developerList.get(i).getGender().name();
-            int salary = developerList.get(i).getSalary();
-            int companyId = developerList.get(i).getCompanyId();
+                String name = developerList.get(i).getName();
+                int age = developerList.get(i).getAge();
+                String gender = developerList.get(i).getGender().name();
+                int salary = developerList.get(i).getSalary();
+                int companyId = developerList.get(i).getCompanyId();
 
-            insertSt.setString(1, name);
-            insertSt.setInt(2, age);
-            insertSt.setString(3, gender);
-            insertSt.setInt(4, salary);
-            insertSt.setInt(5, companyId);
-            insertSt.addBatch();
+                insertSt.setString(1, name);
+                insertSt.setInt(2, age);
+                insertSt.setString(3, gender);
+                insertSt.setInt(4, salary);
+                insertSt.setInt(5, companyId);
+                insertSt.addBatch();
+            }
+            insertSt.executeBatch();
+            if (developerList.size() > 1) {
+                log.info("Insert " + developerList.size() + " new records");
+            } else if (developerList.size() == 1) {
+                log.info("Insert " + developerList.size() + "new record");
+            }
+            return developerList.size();
+        } catch (DaoException | SQLException ex) {
+            ex.printStackTrace();
         }
-        if (developerList.size() > 1) {
-            log.info("Insert " + developerList.size() + " new records");
-        } else if (developerList.size() == 1) {
-            log.info("Insert " + developerList.size() + "new record");
-        }
-        insertSt.executeBatch();
-
-        return developerList.size();
+        return -1;
     }
 
-    public boolean updateEntityFieldsStOfDeveloperById(Developer developer, long id) {
+    @Override
+    public boolean updateEntityFieldsById(Developer developer, long id) {
         try {
             updateEntityFieldsSt.setString(1, developer.getName());
             updateEntityFieldsSt.setInt(2, developer.getAge());
@@ -188,23 +222,33 @@ public class DeveloperDaoService {
         return false;
     }
 
-    public Developer getEntityById(long id) throws SQLException {
-        getEntityByIdSt.setLong(1, id);
+    @Override
+    public Developer getEntityById(long id) {
+        try {
+            getEntityByIdSt.setLong(1, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         try (ResultSet rs = getEntityByIdSt.executeQuery()) {
-            if (!rs.next()) {
-                return null;
-            }
             Developer developer = new Developer();
-            developer.setId(id);
-            developer.setName(rs.getNString("name"));
-            developer.setAge(rs.getInt("age"));
-            developer.setGender(Developer.Gender.valueOf(rs.getNString("gender")));
-            developer.setSalary(rs.getInt("salary"));
-            developer.setCompanyId(rs.getInt("company_id"));
+            while (rs.next()) {
+                developer.setId(id);
+                developer.setName(rs.getNString("name"));
+                developer.setAge(rs.getInt("age"));
+                developer.setGender(Developer.Gender.valueOf(rs.getNString("gender")));
+                developer.setSalary(rs.getInt("salary"));
+                developer.setCompanyId(rs.getInt("company_id"));
+
+            }
             log.info("get Developer by id: " + id);
             return developer;
+
+        } catch (DaoException | SQLException e) {
+            e.printStackTrace();
+
         }
+        return null;
     }
 
     public List<Developer> getDeveloperBySpecificFieldLike(String query) throws SQLException {
@@ -213,11 +257,12 @@ public class DeveloperDaoService {
         return getDevelopers(getBySpecificFieldLikeSt);
     }
 
-    public List<Developer> getAllEntities() throws SQLException {
+    public List<Developer> getAllEntities() {
         return getDevelopers(getAllEntitiesSt);
+
     }
 
-    private List<Developer> getDevelopers(PreparedStatement st) throws SQLException {
+    private List<Developer> getDevelopers(PreparedStatement st) {
         try (ResultSet rs = st.executeQuery()) {
             List<Developer> developers = new ArrayList<>();
             while (rs.next()) {
@@ -229,10 +274,12 @@ public class DeveloperDaoService {
                 developer.setSalary(rs.getInt("salary"));
                 developer.setCompanyId(rs.getInt("company_id"));
                 developers.add(developer);
-
             }
             log.info("Received list of: " + developers.size() + " Developers");
             return developers;
+        } catch (DaoException | SQLException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 }

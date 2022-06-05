@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 @Data
@@ -15,10 +16,14 @@ import java.time.LocalDate;
 @ToString
 @EqualsAndHashCode
 class Project {
-    long id;
-    String name;
-    String description;
-    LocalDate date;
-    int customerId;
-    int companyId;
+    private long id;
+    private String name;
+    private String description;
+    private LocalDate date;
+    private int customerId;
+    private int companyId;
+
+    protected LocalDate getDate(String str){
+        return LocalDate.parse(str.format(String.valueOf(DateTimeFormatter.ofPattern("yyyy-mm-dd"))));
+    }
 }

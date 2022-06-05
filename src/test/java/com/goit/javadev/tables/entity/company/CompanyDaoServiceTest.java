@@ -37,7 +37,6 @@ public class CompanyDaoServiceTest {
         Company companyTest = new Company(1, "TestCompany", "UnitTest");
         long id = companyDaoService.insertNewCompany(companyTest);
         Company createdCompany = companyDaoService.getCompanyById(id);
-
-        Assertions.assertEquals(1, createdCompany.getId());
+        Assertions.assertEquals(id, createdCompany.getId());
     }
 }

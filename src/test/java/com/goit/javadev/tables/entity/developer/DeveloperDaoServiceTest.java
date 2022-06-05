@@ -26,7 +26,7 @@ class DeveloperDaoServiceTest {
     String jsonFilePath;
 
     @BeforeEach
-    void beforeEach () throws SQLException {
+    void beforeEach() throws SQLException {
         final String jdbc = "jdbc:h2:mem:./testDataBase;DB_CLOSE_DELAY=-1";
         String sqlCreateDataBase = "CREATE SCHEMA IF NOT EXISTS `homework_4`";
         //id, name, age, gender, salary, company_id
@@ -50,37 +50,37 @@ class DeveloperDaoServiceTest {
     }
 
     @Test
-    void testThatEntityCreated() throws SQLException {
-        long id =  developerDaoService.insertNewEntity(developerTest1);
+    void testThatEntityCreated() {
+        long id = developerDaoService.insertNewEntity(developerTest1);
         Developer createdDeveloper = developerDaoService.getEntityById(id);
-        Assertions.assertEquals(1, createdDeveloper.getId());
+        Assertions.assertEquals(id, createdDeveloper.getId());
     }
 
     @Test
-    void testThatEntitiesCreated() throws SQLException{
+    void testThatEntitiesCreated() {
         List<Developer> listDeveloper = List.of(developerTest1, developerTest2, developerTest3);
-        int expected = developerDaoService.createDeveloperFromList(listDeveloper);
+        int expected = developerDaoService.insertNewEntities(listDeveloper);
         int actual = developerDaoService.getAllEntities().size();
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    void testThatEntityFieldsUpdated() throws SQLException{
+    void testThatEntityFieldsUpdated() {
         developerDaoService.insertNewEntity(developerTest1);
-        boolean actual = developerDaoService.updateEntityFieldsStOfDeveloperById(developerTest2, 1);
+        boolean actual = developerDaoService.updateEntityFieldsById(developerTest2, 1);
         Assertions.assertTrue(true, String.valueOf(actual));
     }
 
     @Test
-    void testThatEntitiesReceivedByLikeQuery() throws SQLException{
+    void testThatEntitiesReceivedByLikeQuery() throws SQLException {
         List<Developer> expected = List.of(developerTest1, developerTest2, developerTest3);
-        developerDaoService.createDeveloperFromList(expected);
+        developerDaoService.insertNewEntities(expected);
         List<Developer> actual = developerDaoService.getDeveloperBySpecificFieldLike("TestName");
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    void testThatEntityDeleted() throws SQLException {
+    void testThatEntityDeleted() {
         developerDaoService.insertNewEntity(developerTest1);
         developerDaoService.deleteById(1);
         Optional<Developer> actual = Optional.ofNullable(developerDaoService.getEntityById(1));
@@ -88,28 +88,28 @@ class DeveloperDaoServiceTest {
     }
 
     @Test
-    void testThatEntitiesWereDeleted() throws SQLException {
+    void testThatEntitiesWereDeleted() {
         List<Developer> listDeveloper = List.of(developerTest1, developerTest2, developerTest3);
         long[] longArr = {1, 2, 3};
-        int expected =  developerDaoService.createDeveloperFromList(listDeveloper);
+        int expected = developerDaoService.insertNewEntities(listDeveloper);
         int actual = developerDaoService.deleteEntitiesFromListById(longArr);
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    void testThatEntitiesWereInsertedFromJsonFile() throws SQLException {
-        int expected = developerDaoService.insertNewDevelopersFromJsonFile(jsonFilePath);
+    void testThatEntitiesWereInsertedFromJsonFile() {
+        int expected = developerDaoService.insertEntitiesFromJsonFile(jsonFilePath);
         int actual = developerDaoService.getAllEntities().size();
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    void testThatTableWasCleared() throws SQLException {
+    void testThatTableWasCleared() {
         List<Developer> listDeveloper = new ArrayList<>();
         listDeveloper.add(developerTest1);
         listDeveloper.add(developerTest2);
         listDeveloper.add(developerTest3);
-        developerDaoService.createDeveloperFromList(listDeveloper);
+        developerDaoService.insertNewEntities(listDeveloper);
         developerDaoService.clearTable();
         Optional<Developer> actual = Optional.ofNullable(developerDaoService.getEntityById(1));
         Assertions.assertFalse(false, String.valueOf(actual.isPresent()));

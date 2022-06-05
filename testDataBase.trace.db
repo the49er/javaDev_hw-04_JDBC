@@ -1,0 +1,60 @@
+2022-06-04 14:49:15 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table new (id BIGINT [*]IDENTITY, name VARCHAR(100)"; expected "ARRAY, INVISIBLE, VISIBLE, NOT, NULL, AS, DEFAULT, GENERATED, ON, NOT, NULL, AUTO_INCREMENT, DEFAULT, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, AUTO_INCREMENT, ,, )"; SQL statement:
+create table new (id BIGINT IDENTITY, name VARCHAR(100) [42001-212]
+2022-06-04 14:49:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table new (id BIGINT AUTO_INCREMENT, name VARCHAR(100)[*]"; expected "ARRAY, INVISIBLE, VISIBLE, NOT, NULL, AS, DEFAULT, GENERATED, ON, NOT, NULL, AUTO_INCREMENT, DEFAULT, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, AUTO_INCREMENT, ,, )"; SQL statement:
+create table new (id BIGINT AUTO_INCREMENT, name VARCHAR(100) [42001-212]
+2022-06-04 14:50:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table new (id BIGINT, name VARCHAR(100)[*]"; expected "ARRAY, INVISIBLE, VISIBLE, NOT, NULL, AS, DEFAULT, GENERATED, ON, NOT, NULL, AUTO_INCREMENT, DEFAULT, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, AUTO_INCREMENT, ,, )"; SQL statement:
+create table new (id BIGINT, name VARCHAR(100) [42001-212]
+2022-06-04 14:51:07 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table if not exists new (id BIGINT [*]IDENTITY PRIMARY KEY, name VARCHAR(100))"; expected "ARRAY, INVISIBLE, VISIBLE, NOT, NULL, AS, DEFAULT, GENERATED, ON, NOT, NULL, AUTO_INCREMENT, DEFAULT, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, AUTO_INCREMENT, ,, )"; SQL statement:
+create table if not exists new (id BIGINT IDENTITY PRIMARY KEY, name VARCHAR(100)) [42001-212]
+2022-06-04 14:51:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table if not exists new (id BIGINT [*]IDENTITY, name VARCHAR(100))"; expected "ARRAY, INVISIBLE, VISIBLE, NOT, NULL, AS, DEFAULT, GENERATED, ON, NOT, NULL, AUTO_INCREMENT, DEFAULT, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, AUTO_INCREMENT, ,, )"; SQL statement:
+create table if not exists new (id BIGINT IDENTITY, name VARCHAR(100)) [42001-212]
+2022-06-04 14:52:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO new [*]name VALUES 'Valera'"; expected "., (, OVERRIDING, DIRECT, SORTED, DEFAULT, VALUES, SET, WITH, (, SELECT, TABLE, VALUES"; SQL statement:
+INSERT INTO new name VALUES 'Valera' [42001-212]
+2022-06-04 14:53:22 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "show columns[*]"; expected "FROM"; SQL statement:
+show columns [42001-212]
+2022-06-04 14:54:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table if not exists new (id BIGINT [*]IDENTITY , name VARCHAR(100), PRIMARY KEY(id))"; expected "ARRAY, INVISIBLE, VISIBLE, NOT, NULL, AS, DEFAULT, GENERATED, ON, NOT, NULL, AUTO_INCREMENT, DEFAULT, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, AUTO_INCREMENT, ,, )"; SQL statement:
+create table if not exists new (id BIGINT IDENTITY , name VARCHAR(100), PRIMARY KEY(id)) [42001-212]
+2022-06-04 14:55:33 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table if not exists new (id BIGINT PRIMARY KEY [*](id) , name VARCHAR(100))"; expected "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT, NULL, CHECK, REFERENCES, AUTO_INCREMENT, ,, )"; SQL statement:
+create table if not exists new (id BIGINT PRIMARY KEY (id) , name VARCHAR(100)) [42001-212]
+2022-06-04 14:56:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table if not exists new2 (id IDENTITY [*]BIGINT, name VARCHAR(100))"; expected "(, INVISIBLE, VISIBLE, NOT, NULL, DEFAULT, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+create table if not exists new2 (id IDENTITY BIGINT, name VARCHAR(100)) [42001-212]
+2022-06-04 14:59:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS `homework_4`.developers ([*]""id IDENTITY PRIMARY KEY, name VARCHAR(100) NOT NULL, age INT, gender VARCHAR(10) NULL, salary INT, company_id INT)"; SQL statement:
+CREATE TABLE IF NOT EXISTS `homework_4`.developers ("id IDENTITY PRIMARY KEY, name VARCHAR(100) NOT NULL, age INT, gender VARCHAR(10) NULL, salary INT, company_id INT) [42000-212]
+2022-06-04 14:59:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS `homework_4`.developers ([*]""id IDENTITY PRIMARY KEY, name VARCHAR(100) NOT NULL, age INT, gender VARCHAR(10) NULL, salary INT, company_id INT);"; SQL statement:
+CREATE TABLE IF NOT EXISTS `homework_4`.developers ("id IDENTITY PRIMARY KEY, name VARCHAR(100) NOT NULL, age INT, gender VARCHAR(10) NULL, salary INT, company_id INT); [42000-212]
+2022-06-04 14:59:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTSdevelopers ([*]""id IDENTITY PRIMARY KEY, name VARCHAR(100) NOT NULL, age INT, gender VARCHAR(10) NULL, salary INT, company_id INT);"; SQL statement:
+CREATE TABLE IF NOT EXISTSdevelopers ("id IDENTITY PRIMARY KEY, name VARCHAR(100) NOT NULL, age INT, gender VARCHAR(10) NULL, salary INT, company_id INT); [42000-212]
+2022-06-04 14:59:26 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS developers ([*]""id IDENTITY PRIMARY KEY, name VARCHAR(100) NOT NULL, age INT, gender VARCHAR(10) NULL, salary INT, company_id INT);"; SQL statement:
+CREATE TABLE IF NOT EXISTS developers ("id IDENTITY PRIMARY KEY, name VARCHAR(100) NOT NULL, age INT, gender VARCHAR(10) NULL, salary INT, company_id INT); [42000-212]
+2022-06-04 19:02:27 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]""CREATE TABLE `homework_4`.projects (id IDENTITY PRIMARY KEY, name VARCHAR(100), description VARCHAR(100), date_contract DATE, customer_id INT, company_id INT)"""; SQL statement:
+"CREATE TABLE `homework_4`.projects (id IDENTITY PRIMARY KEY, name VARCHAR(100), description VARCHAR(100), date_contract DATE, customer_id INT, company_id INT)" [42000-212]
+2022-06-04 19:02:34 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]""CREATE TABLE `homework_4`.projects (id IDENTITY PRIMARY KEY, name VARCHAR(100), description VARCHAR(100), date_contract DATE, customer_id INT, company_id INT);"; SQL statement:
+"CREATE TABLE `homework_4`.projects (id IDENTITY PRIMARY KEY, name VARCHAR(100), description VARCHAR(100), date_contract DATE, customer_id INT, company_id INT); [42000-212]
+2022-06-04 19:02:42 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]""CREATE TABLE projects (id IDENTITY PRIMARY KEY, name VARCHAR(100), description VARCHAR(100), date_contract DATE, customer_id INT, company_id INT);"; SQL statement:
+"CREATE TABLE projects (id IDENTITY PRIMARY KEY, name VARCHAR(100), description VARCHAR(100), date_contract DATE, customer_id INT, company_id INT); [42000-212]
+2022-06-04 19:04:37 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PROJECTS" already exists; SQL statement:
+CREATE TABLE projects (id IDENTITY PRIMARY KEY, name VARCHAR(100), description VARCHAR(100), date_contract DATE, customer_id INT, company_id INT) [42101-212]
+2022-06-04 19:04:37 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO projects (name, description, date_contract, customer_id, company_id) VALUES ('Test', 'TestDescr', [*]'2022-02-02, 1, 2);"; SQL statement:
+INSERT INTO projects (name, description, date_contract, customer_id, company_id) VALUES ('Test', 'TestDescr', '2022-02-02, 1, 2); [42000-212]
+2022-06-04 19:04:53 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO projects (name, description, date_contract, customer_id, company_id) VALUES ('Test', 'TestDescr', [*]'2022-02-02, 1, 2);"; SQL statement:
+INSERT INTO projects (name, description, date_contract, customer_id, company_id) VALUES ('Test', 'TestDescr', '2022-02-02, 1, 2); [42000-212]

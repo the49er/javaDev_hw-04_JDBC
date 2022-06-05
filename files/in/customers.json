@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Peri",
+    "businessSphere": "Building Constructions"
+  },
+  {
+    "id": 2,
+    "name": "Mail Express",
+    "businessSphere": "Logistic Company"
+  },
+  {
+    "id": 3,
+    "name": "MoneyBank",
+    "businessSphere": "Banking"
+  },
+  {
+    "id": 4,
+    "name": "BetStore",
+    "businessSphere": "Gambling"
+  }
+]

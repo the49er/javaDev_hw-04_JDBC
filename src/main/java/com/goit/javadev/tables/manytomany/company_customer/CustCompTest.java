@@ -1,16 +1,9 @@
-package com.goit.javadev.tables.manytomany.companycustomer;
+package com.goit.javadev.tables.manytomany.company_customer;
 
 import com.goit.javadev.feature.storage.Storage;
-import com.goit.javadev.tables.entity.customer.CustomerDaoService;
-import com.google.gson.Gson;
-
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
+
 
 public class CustCompTest {
     public static void main(String[] args) throws SQLException {
@@ -34,9 +27,11 @@ public class CustCompTest {
 //            e.printStackTrace();
 //        }
 
-        Optional<List<CompanyCustomerKey>> all = companyCustomerDaoService.getAll();
-        all.stream()
-                .forEach(System.out::println);
+//        Optional<List<CompanyCustomerKey>> all = companyCustomerDaoService.getAll();
+//        all.stream()
+//                .forEach(System.out::println);
+
+        companyCustomerDaoService.insertKey(new CompanyCustomerKey(4,4));
 
     }
 }

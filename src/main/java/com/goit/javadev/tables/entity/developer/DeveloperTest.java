@@ -13,8 +13,7 @@ public class DeveloperTest {
         String jsonFileCompOut = "files/out/developers.json";
         DeveloperDaoService developerDbService = new DeveloperDaoService(connection);
 
-//        developerDbService.getEntityById(1);
-//        System.out.println(developerDbService.getEntityById(1));
+        System.out.println(developerDbService.getEntityById(10));
 //        List<Developer> fieldLike = developerDbService.getAllEntities();
 //        System.out.println(fieldLike.size());
 //        fieldLike.stream()

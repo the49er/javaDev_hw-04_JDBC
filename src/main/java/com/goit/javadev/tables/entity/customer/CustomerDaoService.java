@@ -1,5 +1,7 @@
 package com.goit.javadev.tables.entity.customer;
 
+import com.goit.javadev.exception.DaoException;
+import com.goit.javadev.tables.entity.crudEntityDAO;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class CustomerDaoService {
+public class CustomerDaoService implements crudEntityDAO<Customer> {
 
     private static final String TABLE_NAME = "`homework_4`.customers";
     private PreparedStatement insertSt;
@@ -71,23 +73,30 @@ public class CustomerDaoService {
         );
     }
 
-    public int deleteEntitiesFromListById (long[] ids) throws SQLException {
-        int result = 0;
-        for (long id: ids) {
-            deleteById.setLong(1, id);
-            deleteById.addBatch();
-            result++;
+    @Override
+    public int deleteEntitiesFromListById(long[] ids) {
+        try {
+            int result = 0;
+            for (long id : ids) {
+                deleteById.setLong(1, id);
+                deleteById.addBatch();
+                result++;
+            }
+            deleteById.executeBatch();
+            if (ids.length > 1) {
+                log.info("Attention! " + ids.length + " records were deleted");
+            } else if (ids.length == 1) {
+                log.info("Attention! " + ids.length + " record was deleted");
+            }
+            return result;
+        }catch (DaoException | SQLException ex) {
+            ex.printStackTrace();
+            return -1;
         }
-        deleteById.executeBatch();
-        if (ids.length > 1) {
-            log.info("Attention! " + ids.length + " records were deleted");
-        } else if (ids.length == 1) {
-            log.info("Attention! " + ids.length + " record was deleted");
-        }
-        return result;
     }
 
-    public boolean deleteById (long id) throws SQLException {
+    @Override
+    public boolean deleteById(long id) {
         try {
             deleteById.setLong(1, id);
             deleteById.executeUpdate();
@@ -99,26 +108,39 @@ public class CustomerDaoService {
         return false;
     }
 
+    @Override
+    public long insertNewEntity(Customer customer) {
+        try {
+            insertSt.setString(1, customer.getName());
+            insertSt.setString(2, customer.getBusinessSphere());
+            insertSt.executeUpdate();
 
-    public long insertNewEntity(Customer customer) throws SQLException {
-        insertSt.setString(1, customer.getName());
-        insertSt.setString(2, customer.getBusinessSphere());
-        insertSt.executeUpdate();
-
-        long id;
-        try (ResultSet rs = getMaxIdSt.executeQuery()) {
-            rs.next();
-            id = rs.getLong("maxId");
+            long id;
+            try (ResultSet rs = getMaxIdSt.executeQuery()) {
+                rs.next();
+                id = rs.getLong("maxId");
+            }
+            return id;
+        } catch (DaoException | SQLException ex) {
+            ex.printStackTrace();
+            return -1;
         }
-        return id;
     }
 
-    public void clearTable() throws SQLException {
-        clearTableSt.executeUpdate();
-        log.info(TABLE_NAME + " has been cleared");
+    @Override
+    public boolean clearTable() {
+        try {
+            clearTableSt.executeUpdate();
+            log.info(TABLE_NAME + " has been cleared");
+            return true;
+        }catch (DaoException | SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
     }
 
-    public int insertNewEntitiesFromJsonFile(String jsonFilePath) throws SQLException {
+    @Override
+    public int insertEntitiesFromJsonFile(String jsonFilePath) {
         Gson gson = new Gson();
         String inString = null;
         try {
@@ -133,7 +155,7 @@ public class CustomerDaoService {
                 Arrays.stream(customers)
                         .collect(Collectors.toList());
 
-        createEntityFromList(customerList);
+        insertNewEntities(customerList);
         if (customerList.size() > 1) {
             log.info("Created " + customerList.size() + " new records from JSON");
         } else if (customerList.size() == 1) {
@@ -142,27 +164,33 @@ public class CustomerDaoService {
         return customerList.size();
     }
 
-    public int createEntityFromList(List<Customer> customerList) throws SQLException {
-        for (int i = 0; i < customerList.size(); i++) {
+    @Override
+    public int insertNewEntities(List<Customer> customerList) {
+        try {
+            for (int i = 0; i < customerList.size(); i++) {
 
-            String name = customerList.get(i).getName();
-            String business_sphere = customerList.get(i).getBusinessSphere();
+                String name = customerList.get(i).getName();
+                String business_sphere = customerList.get(i).getBusinessSphere();
 
-            insertSt.setString(1, name);
-            insertSt.setString(2, business_sphere);
-            insertSt.addBatch();
+                insertSt.setString(1, name);
+                insertSt.setString(2, business_sphere);
+                insertSt.addBatch();
+            }
+            if (customerList.size() > 1) {
+                log.info("Insert " + customerList.size() + " new records");
+            } else if (customerList.size() == 1) {
+                log.info("Insert " + customerList.size() + "new record");
+            }
+            insertSt.executeBatch();
+            return customerList.size();
+        }catch (DaoException | SQLException ex) {
+            ex.printStackTrace();
+            return -1;
         }
-        if (customerList.size() > 1) {
-            log.info("Insert " + customerList.size() + " new records");
-        } else if (customerList.size() == 1) {
-            log.info("Insert " + customerList.size() + "new record");
-        }
-        insertSt.executeBatch();
-
-        return customerList.size();
     }
 
-    public boolean updateContractEntityFieldsStOfCustomerById(Customer customer, long id) {
+    @Override
+    public boolean updateEntityFieldsById(Customer customer, long id) {
         try {
             updateContractEntityFieldsSt.setString(1, customer.getName());
             updateContractEntityFieldsSt.setString(2, customer.getBusinessSphere());
@@ -174,8 +202,13 @@ public class CustomerDaoService {
         return false;
     }
 
-    public Customer getEntityById(long id) throws SQLException {
-        getEntityByIdSt.setLong(1, id);
+    @Override
+    public Customer getEntityById(long id) {
+        try {
+            getEntityByIdSt.setLong(1, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         try (ResultSet rs = getEntityByIdSt.executeQuery()) {
             if (!rs.next()) {
@@ -187,20 +220,18 @@ public class CustomerDaoService {
             customer.setBusinessSphere(rs.getString("business_sphere"));
             log.info("get Customer by id: " + id);
             return customer;
+        }catch (DaoException | SQLException ex) {
+            ex.printStackTrace();
+            return null;
         }
     }
 
-    public List<Customer> getCustomerBySpecificFieldLike(String query) throws SQLException {
-        getBySpecificFieldLikeSt.setString(1, "%" + query + "%");
-        log.info("get list of Customers by:  query: " + "\"" + query + "\"");
-        return getCustomers(getBySpecificFieldLikeSt);
-    }
 
-    public List<Customer> getAllEntities() throws SQLException {
+    public List<Customer> getAllEntities() {
         return getCustomers(getAllEntitiesSt);
     }
 
-    private List<Customer> getCustomers(PreparedStatement st) throws SQLException {
+    private List<Customer> getCustomers(PreparedStatement st){
         try (ResultSet rs = st.executeQuery()) {
             List<Customer> customers = new ArrayList<>();
             while (rs.next()) {
@@ -213,6 +244,9 @@ public class CustomerDaoService {
             }
             log.info("Received list of: " + customers.size() + " Customers");
             return customers;
+        } catch (DaoException | SQLException ex) {
+            ex.printStackTrace();
+            return null;
         }
     }
 }

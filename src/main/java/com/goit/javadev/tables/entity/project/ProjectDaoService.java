@@ -1,5 +1,7 @@
 package com.goit.javadev.tables.entity.project;
 
+import com.goit.javadev.exception.DaoException;
+import com.goit.javadev.tables.entity.crudEntityDAO;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,79 +19,80 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class ProjectDaoService {
+public class ProjectDaoService implements crudEntityDAO<Project> {
 
     private static final String TABLE_NAME = "`homework_4`.projects";
-    private PreparedStatement insertSt;
-    private PreparedStatement updateEntityFieldsSt;
-    private PreparedStatement updateEntityNameFieldSt;
-    private PreparedStatement getEntityByIdSt;
-    private PreparedStatement getBySpecificFieldLikeSt;
-    private PreparedStatement getAllEntitiesSt;
-    private PreparedStatement deleteById;
-    private PreparedStatement clearTableSt;
-    private PreparedStatement getMaxIdSt;
+    PreparedStatement insertSt;
+    PreparedStatement updateEntityFieldsSt;
+    PreparedStatement getEntityByIdSt;
+    PreparedStatement getAllEntitiesSt;
+    PreparedStatement deleteById;
+    PreparedStatement clearTableSt;
+    PreparedStatement getMaxIdSt;
 
 
-    public ProjectDaoService(Connection connection) throws SQLException {
+    public ProjectDaoService(Connection connection) {
+        try {
+            getMaxIdSt = connection.prepareStatement(
+                    "SELECT max(id) AS maxId FROM " + TABLE_NAME
+            );
 
-        getMaxIdSt = connection.prepareStatement(
-                "SELECT max(id) AS maxId FROM " + TABLE_NAME
-        );
+            insertSt = connection.prepareStatement(
+                    "INSERT INTO " + TABLE_NAME + " (name, description, date_contract, customer_id, company_id) VALUES (?, ?, ?, ?, ?)"
+            );
 
-        insertSt = connection.prepareStatement(
-                "INSERT INTO " + TABLE_NAME + " (name, description, date_contract, customer_id, company_id) VALUES (?, ?, ?, ?, ?)"
-        );
+            updateEntityFieldsSt = connection.prepareStatement(
+                    "UPDATE " + TABLE_NAME + " SET name = ?, description = ?, date_contract = ?," +
+                            "customer_id = ?, company_id = ? WHERE id = ?"
+            );
 
-        updateEntityFieldsSt = connection.prepareStatement(
-                "UPDATE " + TABLE_NAME + " SET name = ?, description = ?, date_contract = ?" +
-                        "customer_id = ?, company_id = ? WHERE id = ?"
-        );
 
-        updateEntityNameFieldSt = connection.prepareStatement(
-                "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?"
-        );
+            getEntityByIdSt = connection.prepareStatement(
+                    "SELECT id, name, description, date_contract, customer_id, company_id FROM " +
+                            TABLE_NAME + " WHERE id = ?"
+            );
 
-        getEntityByIdSt = connection.prepareStatement(
-                "SELECT id, name, description, date_contract, customer_id, company_id FROM " +
-                        TABLE_NAME + " WHERE id = ?"
-        );
 
-        getBySpecificFieldLikeSt = connection.prepareStatement(
-                "SELECT id, name, description, date_contract, customer_id, company_id FROM " +
-                        TABLE_NAME + " WHERE name LIKE ?"
-        );
+            getAllEntitiesSt = connection.prepareStatement(
+                    "SELECT id, name, description, date_contract, customer_id, company_id FROM " + TABLE_NAME
+            );
 
-        getAllEntitiesSt = connection.prepareStatement(
-                "SELECT id, name, description, date_contract, customer_id, company_id FROM " + TABLE_NAME
-        );
+            deleteById = connection.prepareStatement(
+                    "DELETE FROM " + TABLE_NAME + " WHERE ID = ?"
+            );
 
-        deleteById = connection.prepareStatement(
-                "DELETE FROM " + TABLE_NAME + " WHERE ID = ?"
-        );
-
-        clearTableSt = connection.prepareStatement(
-                "DELETE FROM " + TABLE_NAME
-        );
+            clearTableSt = connection.prepareStatement(
+                    "DELETE FROM " + TABLE_NAME
+            );
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
-    public int deleteEntitiesFromListById (long[] ids) throws SQLException {
+    @Override
+    public int deleteEntitiesFromListById (long[] ids) {
         int result = 0;
-        for (long id: ids) {
-            deleteById.setLong(1, id);
-            deleteById.addBatch();
-            result++;
+        try{
+            for (long id: ids) {
+                deleteById.setLong(1, id);
+                deleteById.addBatch();
+                result++;
+            }
+            deleteById.executeBatch();
+            if (ids.length > 1) {
+                log.info("Attention! " + ids.length + " records were deleted");
+            } else if (ids.length == 1) {
+                log.info("Attention! " + ids.length + " record was deleted");
+            }
+            return result;
+        }catch (DaoException | SQLException e) {
+            e.printStackTrace();
+            return -1;
         }
-        deleteById.executeBatch();
-        if (ids.length > 1) {
-            log.info("Attention! " + ids.length + " records were deleted");
-        } else if (ids.length == 1) {
-            log.info("Attention! " + ids.length + " record was deleted");
-        }
-        return result;
     }
 
-    public boolean deleteById (long id) throws SQLException {
+    @Override
+    public boolean deleteById (long id) {
         try {
             deleteById.setLong(1, id);
             deleteById.executeUpdate();
@@ -101,29 +104,46 @@ public class ProjectDaoService {
         return false;
     }
 
-
-    public long insertNewEntity(Project project) throws SQLException {
-        insertSt.setString(1, project.getName());
-        insertSt.setString(2, project.getDescription());
-        insertSt.setString(3, project.getDate().toString());
-        insertSt.setInt(4, project.getCustomerId());
-        insertSt.setInt(5, project.getCompanyId());
-        insertSt.executeUpdate();
-
+    @Override
+    public long insertNewEntity(Project project) {
         long id;
+        try {
+            insertSt.setString(1, project.getName());
+            insertSt.setString(2, project.getDescription());
+            insertSt.setString(3, project.getDate().toString());
+            insertSt.setInt(4, project.getCustomerId());
+            insertSt.setInt(5, project.getCompanyId());
+            insertSt.executeUpdate();
+        }catch (DaoException | SQLException e) {
+            e.printStackTrace();
+        }
+
+
         try (ResultSet rs = getMaxIdSt.executeQuery()) {
             rs.next();
             id = rs.getLong("maxId");
+            return id;
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
         }
-        return id;
     }
 
-    public void clearTable() throws SQLException {
-        clearTableSt.executeUpdate();
-        log.info(TABLE_NAME + " has been cleared");
+
+    @Override
+    public boolean clearTable() {
+        try {
+            clearTableSt.executeUpdate();
+            log.info(TABLE_NAME + " has been cleared");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public int insertNewProjectsFromJsonFile(String jsonFilePath) throws SQLException {
+    @Override
+    public int insertEntitiesFromJsonFile(String jsonFilePath) {
         Gson gson = new Gson();
         String inString = null;
         try {
@@ -138,7 +158,7 @@ public class ProjectDaoService {
                 Arrays.stream(projects)
                         .collect(Collectors.toList());
 
-        createProjectFromList(projectList);
+        insertNewEntities(projectList);
         if (projectList.size() > 1) {
             log.info("Created " + projectList.size() + " new records from JSON");
         } else if (projectList.size() == 1) {
@@ -147,33 +167,38 @@ public class ProjectDaoService {
         return projectList.size();
     }
 
-    public int createProjectFromList(List<Project> projectList) throws SQLException {
-        for (int i = 0; i < projectList.size(); i++) {
+    @Override
+    public int insertNewEntities(List<Project> projectList) {
+        try {
+            for (Project project : projectList) {
+                String name = project.getName();
+                String description = project.getDescription();
+                String dateContract = project.getDate().toString();
+                int customerId = project.getCustomerId();
+                int companyId = project.getCompanyId();
 
-            String name = projectList.get(i).getName();
-            String description = projectList.get(i).getDescription();
-            String dateContract = projectList.get(i).getDate().toString();
-            int customerId = projectList.get(i).getCustomerId();
-            int companyId = projectList.get(i).getCompanyId();
-
-            insertSt.setString(1, name);
-            insertSt.setString(2, description);
-            insertSt.setString(3, dateContract);
-            insertSt.setInt(4, customerId);
-            insertSt.setInt(5, companyId);
-            insertSt.addBatch();
+                insertSt.setString(1, name);
+                insertSt.setString(2, description);
+                insertSt.setString(3, dateContract);
+                insertSt.setInt(4, customerId);
+                insertSt.setInt(5, companyId);
+                insertSt.addBatch();
+            }
+            insertSt.executeBatch();
+            if (projectList.size() > 1) {
+                log.info("Insert " + projectList.size() + " new records");
+            } else if (projectList.size() == 1) {
+                log.info("Insert " + projectList.size() + "new record");
+            }
+            return projectList.size();
+        }catch (DaoException | SQLException e) {
+            e.printStackTrace();
         }
-        if (projectList.size() > 1) {
-            log.info("Insert " + projectList.size() + " new records");
-        } else if (projectList.size() == 1) {
-            log.info("Insert " + projectList.size() + "new record");
-        }
-        insertSt.executeBatch();
-
-        return projectList.size();
+        return -1;
     }
 
-    public boolean updateEntityFieldsStOfProjectById(Project project, long id) {
+    @Override
+    public boolean updateEntityFieldsById(Project project, long id) {
         try {
             updateEntityFieldsSt.setString(1, project.getName());
             updateEntityFieldsSt.setString(2, project.getDescription());
@@ -188,8 +213,13 @@ public class ProjectDaoService {
         return false;
     }
 
-    public Project getEntityById(long id) throws SQLException {
-        getEntityByIdSt.setLong(1, id);
+    @Override
+    public Project getEntityById(long id) {
+        try {
+            getEntityByIdSt.setLong(1, id);
+        } catch (DaoException | SQLException e) {
+            e.printStackTrace();
+        }
 
         try (ResultSet rs = getEntityByIdSt.executeQuery()) {
             if (!rs.next()) {
@@ -199,25 +229,22 @@ public class ProjectDaoService {
             project.setId(id);
             project.setName(rs.getNString("name"));
             project.setDescription(rs.getString("description"));
-            project.setDate(LocalDate.parse(rs.getNString("dateContract")));
+            project.setDate(LocalDate.parse(rs.getString("date_contract")));
             project.setCustomerId(rs.getInt("customer_id"));
             project.setCompanyId(rs.getInt("company_id"));
             log.info("get Project by id: " + id);
             return project;
+        }catch (DaoException | SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
-    public List<Project> getProjectBySpecificFieldLike(String query) throws SQLException {
-        getBySpecificFieldLikeSt.setString(1, "%" + query + "%");
-        log.info("get list of Projects by:  query: " + "\"" + query + "\"");
-        return getProjects(getBySpecificFieldLikeSt);
-    }
-
-    public List<Project> getAllEntities() throws SQLException {
+    public List<Project> getAllEntities(){
         return getProjects(getAllEntitiesSt);
     }
 
-    private List<Project> getProjects(PreparedStatement st) throws SQLException {
+    private List<Project> getProjects(PreparedStatement st) {
         try (ResultSet rs = st.executeQuery()) {
             List<Project> projects = new ArrayList<>();
             while (rs.next()) {
@@ -233,6 +260,9 @@ public class ProjectDaoService {
             }
             log.info("Received list of: " + projects.size() + " Projects");
             return projects;
+        }catch (DaoException | SQLException e){
+            e.printStackTrace();
+            return  null;
         }
     }
 }
