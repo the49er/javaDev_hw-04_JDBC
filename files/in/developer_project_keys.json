@@ -1,0 +1,42 @@
+[
+  {
+    "developerId": 4,
+    "projectId": 1
+  },
+  {
+    "developerId": 3,
+    "projectId": 2
+  },
+  {
+    "developerId": 2,
+    "projectId": 3
+  },
+  {
+    "developerId": 1,
+    "projectId": 4
+  },
+  {
+    "developerId": 5,
+    "projectId": 1
+  },
+  {
+    "developerId": 6,
+    "projectId": 2
+  },
+  {
+    "developerId": 7,
+    "projectId": 4
+  },
+  {
+    "developerId": 8,
+    "projectId": 2
+  },
+  {
+    "developerId": 9,
+    "projectId": 3
+  },
+  {
+    "developerId": 10,
+    "projectId": 4
+  }
+]

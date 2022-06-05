@@ -1,4 +1,4 @@
-package com.goit.javadev.tables.manytomany.developer_project;
+package com.goit.javadev.tables.manytomany.developer_skill;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,8 +11,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class DeveloperProjectKey {
+public class DeveloperSkillKey {
     long developerId;
-    long projectId;
+    long skillId;
 }
 

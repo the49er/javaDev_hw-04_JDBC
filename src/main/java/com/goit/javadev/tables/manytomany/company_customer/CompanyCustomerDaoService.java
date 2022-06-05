@@ -70,10 +70,10 @@ public class CompanyCustomerDaoService implements ManyToMany<CompanyCustomerKey>
     }
 
     @Override
-    public boolean deleteKey(int companyId, int customerId) {
+    public boolean deleteKey(long companyId, long customerId) {
         try {
-            deleteSt.setInt(1, companyId);
-            deleteSt.setInt(1, customerId);
+            deleteSt.setLong(1, companyId);
+            deleteSt.setLong(1, customerId);
             deleteSt.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -119,32 +119,33 @@ public class CompanyCustomerDaoService implements ManyToMany<CompanyCustomerKey>
 
         createKeysFromList(keysList);
         if (keysList.size() > 1) {
-            log.info("Created " + keysList.size() + " new records from JSON");
+            log.info("Created " + keysList.size() + " new key records from JSON");
         } else if (keysList.size() == 1) {
-            log.info("Created " + keysList.size() + "new record from JSON");
+            log.info("Created " + keysList.size() + "new key record from JSON");
         }
         return keysList.size();
     }
 
     @Override
     public int createKeysFromList(List<CompanyCustomerKey> keysList) {
-        for (CompanyCustomerKey companyCustomerKey : keysList) {
-            int companyId = companyCustomerKey.getCompanyId();
-            int customerId = companyCustomerKey.getCustomerId();
+        try {
+            for (CompanyCustomerKey companyCustomerKey : keysList) {
+                int companyId = companyCustomerKey.getCompanyId();
+                int customerId = companyCustomerKey.getCustomerId();
 
-            try {
+
                 insertSt.setInt(1, companyId);
                 insertSt.setInt(2, customerId);
                 insertSt.addBatch();
-                insertSt.executeBatch();
-            } catch (DaoException | SQLException e) {
-                e.printStackTrace();
             }
+            insertSt.executeBatch();
+        } catch (DaoException | SQLException e) {
+            e.printStackTrace();
         }
         if (keysList.size() > 1) {
-            log.info("Insert " + keysList.size() + " new records");
+            log.info("Insert " + keysList.size() + " new key records");
         } else if (keysList.size() == 1) {
-            log.info("Insert " + keysList.size() + "new record");
+            log.info("Insert " + keysList.size() + "new key record");
         }
         return keysList.size();
     }

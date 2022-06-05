@@ -1,0 +1,66 @@
+[
+  {
+    "developerId": 3,
+    "skillId": 3
+  },
+  {
+    "developerId": 3,
+    "skillId": 6
+  },
+  {
+    "developerId": 4,
+    "skillId": 2
+  },
+  {
+    "developerId": 4,
+    "skillId": 5
+  },
+  {
+    "developerId": 1,
+    "skillId": 4
+  },
+  {
+    "developerId": 1,
+    "skillId": 1
+  },
+  {
+    "developerId": 2,
+    "skillId": 7
+  },
+  {
+    "developerId": 2,
+    "skillId": 12
+  },
+  {
+    "developerId": 5,
+    "skillId": 12
+  },
+  {
+    "developerId": 5,
+    "skillId": 9
+  },
+  {
+    "developerId": 6,
+    "skillId": 11
+  },
+  {
+    "developerId": 7,
+    "skillId": 6
+  },
+  {
+    "developerId": 7,
+    "skillId": 2
+  },
+  {
+    "developerId": 8,
+    "skillId": 10
+  },
+  {
+    "developerId": 9,
+    "skillId": 9
+  },
+  {
+    "developerId": 10,
+    "skillId": 10
+  }
+]

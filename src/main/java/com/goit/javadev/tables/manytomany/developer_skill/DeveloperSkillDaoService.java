@@ -1,4 +1,4 @@
-package com.goit.javadev.tables.manytomany.developer_project;
+package com.goit.javadev.tables.manytomany.developer_skill;
 
 import com.goit.javadev.exception.DaoException;
 import com.goit.javadev.tables.manytomany.ManyToMany;
@@ -20,21 +20,21 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class DeveloperProjectDaoService implements ManyToMany<DeveloperProjectKey> {
+public class DeveloperSkillDaoService implements ManyToMany<DeveloperSkillKey> {
     PreparedStatement insertSt;
     PreparedStatement deleteSt;
     PreparedStatement getMaxIdSt;
     PreparedStatement getAllSt;
-    private static final String TABLE_NAME = "`homework_4`.developer_project";
+    private static final String TABLE_NAME = "`homework_4`.developer_skill";
 
-    public DeveloperProjectDaoService(Connection connection) {
+    public DeveloperSkillDaoService(Connection connection) {
         try {
             insertSt = connection.prepareStatement(
-                    "INSERT INTO " + TABLE_NAME + " (developer_id, project_id) VALUES (?, ?)"
+                    "INSERT INTO " + TABLE_NAME + " (developer_id, skill_id) VALUES (?, ?)"
             );
 
             deleteSt = connection.prepareStatement(
-                    "DELETE FROM " + TABLE_NAME + " WHERE developer_id = ? and project_id = ?"
+                    "DELETE FROM " + TABLE_NAME + " WHERE developer_id = ? and skill_id = ?"
             );
 
             getMaxIdSt = connection.prepareStatement(
@@ -42,7 +42,7 @@ public class DeveloperProjectDaoService implements ManyToMany<DeveloperProjectKe
             );
 
             getAllSt = connection.prepareStatement(
-                    "SELECT developer_id, project_id FROM " + TABLE_NAME
+                    "SELECT developer_id, skill_id FROM " + TABLE_NAME
             );
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -50,16 +50,16 @@ public class DeveloperProjectDaoService implements ManyToMany<DeveloperProjectKe
     }
 
     @Override
-    public boolean insertKey(DeveloperProjectKey key) {
+    public boolean insertKey(DeveloperSkillKey key) {
         try (ResultSet rs = getMaxIdSt.executeQuery()) {
             insertSt.setLong(1, key.getDeveloperId());
-            insertSt.setLong(2, key.getProjectId());
+            insertSt.setLong(2, key.getSkillId());
             rs.next();
             insertSt.executeUpdate();
             log.info("Key " + key + " was created");
             return true;
         } catch (SQLIntegrityConstraintViolationException ex) {
-            System.out.println("Can't create key : " + key.getDeveloperId() + ", " + key.getProjectId() + ".\n" +
+            System.out.println("Can't create key : " + key.getDeveloperId() + ", " + key.getSkillId() + ".\n" +
                     "Due to key already exists");
         } catch (DaoException | SQLException e) {
             e.printStackTrace();
@@ -70,10 +70,10 @@ public class DeveloperProjectDaoService implements ManyToMany<DeveloperProjectKe
     }
 
     @Override
-    public boolean deleteKey(long developerId, long projectId) {
+    public boolean deleteKey(long developerId, long skillId) {
         try {
             deleteSt.setLong(1, developerId);
-            deleteSt.setLong(1, projectId);
+            deleteSt.setLong(1, skillId);
             deleteSt.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -83,21 +83,21 @@ public class DeveloperProjectDaoService implements ManyToMany<DeveloperProjectKe
     }
 
     @Override
-    public Optional<List<DeveloperProjectKey>> getAll() {
-        List<DeveloperProjectKey> list = new ArrayList<>();
+    public Optional<List<DeveloperSkillKey>> getAll() {
+        List<DeveloperSkillKey> list = new ArrayList<>();
 
         try (ResultSet rs = getAllSt.executeQuery()) {
             while (rs.next()) {
-                DeveloperProjectKey developerProjectKeyList = new DeveloperProjectKey();
-                developerProjectKeyList.setDeveloperId(rs.getInt("developer_id"));
-                developerProjectKeyList.setProjectId(rs.getInt("project_id"));
-                list.add(developerProjectKeyList);
+                DeveloperSkillKey developerSkillKeyList = new DeveloperSkillKey();
+                developerSkillKeyList.setDeveloperId(rs.getInt("developer_id"));
+                developerSkillKeyList.setSkillId(rs.getInt("skill_id"));
+                list.add(developerSkillKeyList);
 
             }
         } catch (DaoException | SQLException ex) {
             ex.printStackTrace();
         }
-        log.info("Received list of: " + list.size() + " developer_project keys");
+        log.info("Received list of: " + list.size() + " developer_skill keys");
         return Optional.of(list);
     }
 
@@ -112,9 +112,9 @@ public class DeveloperProjectDaoService implements ManyToMany<DeveloperProjectKe
         } catch (IOException e) {
             e.printStackTrace();
         }
-        DeveloperProjectKey[] developerProjectKeyLists = gson.fromJson(inString, DeveloperProjectKey[].class);
-        List<DeveloperProjectKey> keysList =
-                Arrays.stream(developerProjectKeyLists)
+        DeveloperSkillKey[] developerSkillKeyLists = gson.fromJson(inString, DeveloperSkillKey[].class);
+        List<DeveloperSkillKey> keysList =
+                Arrays.stream(developerSkillKeyLists)
                         .collect(Collectors.toList());
 
         createKeysFromList(keysList);
@@ -127,11 +127,11 @@ public class DeveloperProjectDaoService implements ManyToMany<DeveloperProjectKe
     }
 
     @Override
-    public int createKeysFromList(List<DeveloperProjectKey> keysList) {
+    public int createKeysFromList(List<DeveloperSkillKey> keysList) {
         try {
-            for (DeveloperProjectKey developerProjectKeyList : keysList) {
-                long developerId = developerProjectKeyList.getDeveloperId();
-                long projectId = developerProjectKeyList.getProjectId();
+            for (DeveloperSkillKey developerSkillKeyList : keysList) {
+                long developerId = developerSkillKeyList.getDeveloperId();
+                long projectId = developerSkillKeyList.getSkillId();
 
                 insertSt.setLong(1, developerId);
                 insertSt.setLong(2, projectId);

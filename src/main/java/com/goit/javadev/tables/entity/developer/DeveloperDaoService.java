@@ -74,7 +74,7 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
             clearTableSt = connection.prepareStatement(
                     "DELETE FROM " + TABLE_NAME
             );
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
@@ -95,7 +95,7 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
                 log.info("Attention! " + ids.length + " record was deleted");
             }
             return result;
-        }catch (DaoException | SQLException e){
+        } catch (DaoException | SQLException e) {
             e.printStackTrace();
             return -1;
         }
@@ -116,7 +116,7 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
 
     @Override
     public long insertNewEntity(Developer developer) {
-        try  {
+        try {
             insertSt.setString(1, developer.getName());
             insertSt.setInt(2, developer.getAge());
             insertSt.setString(3, developer.getGender().name());
@@ -132,7 +132,7 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
             while (rs.next()) {
                 id = rs.getLong("maxId");
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return id;
@@ -178,13 +178,12 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
     @Override
     public int insertNewEntities(List<Developer> developerList) {
         try {
-            for (int i = 0; i < developerList.size(); i++) {
-
-                String name = developerList.get(i).getName();
-                int age = developerList.get(i).getAge();
-                String gender = developerList.get(i).getGender().name();
-                int salary = developerList.get(i).getSalary();
-                int companyId = developerList.get(i).getCompanyId();
+            for (Developer developer : developerList) {
+                String name = developer.getName();
+                int age = developer.getAge();
+                String gender = developer.getGender().name();
+                int salary = developer.getSalary();
+                int companyId = developer.getCompanyId();
 
                 insertSt.setString(1, name);
                 insertSt.setInt(2, age);

@@ -12,3 +12,4 @@ select * from `homework_4`.skills;
 select * from `homework_4`.projects;
 select * from `homework_4`.customers;
 select * from `homework_4`.company_customer;
+select * from developer_project;

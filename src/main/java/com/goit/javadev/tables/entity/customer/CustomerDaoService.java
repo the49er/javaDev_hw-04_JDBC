@@ -89,7 +89,7 @@ public class CustomerDaoService implements crudEntityDAO<Customer> {
                 log.info("Attention! " + ids.length + " record was deleted");
             }
             return result;
-        }catch (DaoException | SQLException ex) {
+        } catch (DaoException | SQLException ex) {
             ex.printStackTrace();
             return -1;
         }
@@ -133,7 +133,7 @@ public class CustomerDaoService implements crudEntityDAO<Customer> {
             clearTableSt.executeUpdate();
             log.info(TABLE_NAME + " has been cleared");
             return true;
-        }catch (DaoException | SQLException ex) {
+        } catch (DaoException | SQLException ex) {
             ex.printStackTrace();
             return false;
         }
@@ -176,14 +176,14 @@ public class CustomerDaoService implements crudEntityDAO<Customer> {
                 insertSt.setString(2, business_sphere);
                 insertSt.addBatch();
             }
+            insertSt.executeBatch();
             if (customerList.size() > 1) {
                 log.info("Insert " + customerList.size() + " new records");
             } else if (customerList.size() == 1) {
                 log.info("Insert " + customerList.size() + "new record");
             }
-            insertSt.executeBatch();
             return customerList.size();
-        }catch (DaoException | SQLException ex) {
+        } catch (DaoException | SQLException ex) {
             ex.printStackTrace();
             return -1;
         }
@@ -220,7 +220,7 @@ public class CustomerDaoService implements crudEntityDAO<Customer> {
             customer.setBusinessSphere(rs.getString("business_sphere"));
             log.info("get Customer by id: " + id);
             return customer;
-        }catch (DaoException | SQLException ex) {
+        } catch (DaoException | SQLException ex) {
             ex.printStackTrace();
             return null;
         }
@@ -231,7 +231,7 @@ public class CustomerDaoService implements crudEntityDAO<Customer> {
         return getCustomers(getAllEntitiesSt);
     }
 
-    private List<Customer> getCustomers(PreparedStatement st){
+    private List<Customer> getCustomers(PreparedStatement st) {
         try (ResultSet rs = st.executeQuery()) {
             List<Customer> customers = new ArrayList<>();
             while (rs.next()) {

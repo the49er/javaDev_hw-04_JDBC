@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "programLang": "java",
+    "skillLevel": "junior"
+  },
+  {
+    "id": 2,
+    "programLang": "java",
+    "skillLevel": "middle"
+  },
+  {
+    "id": 3,
+    "programLang": "java",
+    "skillLevel": "senior"
+  },
+  {
+    "id": 4,
+    "programLang": "cPlus",
+    "skillLevel": "senior"
+  },
+  {
+    "id": 5,
+    "programLang": "cPlus",
+    "skillLevel": "middle"
+  },
+  {
+    "id": 6,
+    "programLang": "cPlus",
+    "skillLevel": "junior"
+  },
+  {
+    "id": 7,
+    "programLang": "cSharp",
+    "skillLevel": "junior"
+  },
+  {
+    "id": 8,
+    "programLang": "cSharp",
+    "skillLevel": "senior"
+  },
+  {
+    "id": 9,
+    "programLang": "cSharp",
+    "skillLevel": "middle"
+  },
+  {
+    "id": 10,
+    "programLang": "javaScript",
+    "skillLevel": "junior"
+  },
+  {
+    "id": 11,
+    "programLang": "javaScript",
+    "skillLevel": "senior"
+  },
+  {
+    "id": 12,
+    "programLang": "javaScript",
+    "skillLevel": "middle"
+  }
+]

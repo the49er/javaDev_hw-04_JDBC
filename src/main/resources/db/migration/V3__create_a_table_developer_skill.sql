@@ -1,5 +1,5 @@
 USE homework_4;
-CREATE TABLE developer_skill (
+CREATE TABLE developer_skill(
 developer_id BIGINT NULL,
 skill_id BIGINT NULL,
 UNIQUE (developer_id, skill_id),

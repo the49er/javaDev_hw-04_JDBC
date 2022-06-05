@@ -4,7 +4,7 @@
     "name": "Vitaly",
     "age": 25,
     "gender": "male",
-    "salary": 3500,
+    "salary": 3600,
     "companyId": 1
   },
   {
@@ -12,7 +12,7 @@
     "name": "Irina",
     "age": 31,
     "gender": "female",
-    "salary": 3400,
+    "salary": 3450,
     "companyId": 2
   },
   {
@@ -36,7 +36,7 @@
     "name": "Sergiy",
     "age": 29,
     "gender": "male",
-    "salary": 4800,
+    "salary": 4250,
     "companyId": 4
   },
   {

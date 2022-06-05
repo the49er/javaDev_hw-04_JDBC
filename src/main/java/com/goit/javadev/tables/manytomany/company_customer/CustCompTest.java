@@ -10,7 +10,7 @@ public class CustCompTest {
         Storage storage = Storage.getInstance();
         Connection connection = storage.getConnection();
         String jsonFileCompIn = "files/in/customers.json";
-        String jsonFileCompOut = "files/out/company_customer.json";
+        String jsonFileCompOut = "files/out/company_customer_keys.json";
         CompanyCustomerDaoService companyCustomerDaoService = new CompanyCustomerDaoService(connection);
 //        Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
 //

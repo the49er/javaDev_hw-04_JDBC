@@ -22,7 +22,6 @@ public class SkillDaoService implements crudEntityDAO<Skill> {
     private static final String TABLE_NAME = "`homework_4`.skills";
     PreparedStatement insertSt;
     PreparedStatement updateEntityFieldsSt;
-    PreparedStatement updateEntityNameFieldSt;
     PreparedStatement getEntityByIdSt;
     PreparedStatement getBySpecificFieldLikeSt;
     PreparedStatement getAllEntitiesSt;
@@ -76,7 +75,6 @@ public class SkillDaoService implements crudEntityDAO<Skill> {
         long id;
         try (ResultSet rs = getMaxIdSt.executeQuery()) {
             insertSt.setString(1, element.getProgramLang().getProgLang());
-            ;
             insertSt.setString(2, element.getSkillLevel().getLevel());
             insertSt.executeUpdate();
             rs.next();
@@ -102,9 +100,9 @@ public class SkillDaoService implements crudEntityDAO<Skill> {
     @Override
     public int insertNewEntities(List<Skill> element) {
         try {
-            for (int i = 0; i < element.size(); i++) {
-                String programmingLang = element.get(i).getProgramLang().getProgLang();
-                String level = element.get(i).getSkillLevel().getLevel();
+            for (Skill skill : element) {
+                String programmingLang = skill.getProgramLang().getProgLang();
+                String level = skill.getSkillLevel().getLevel();
                 insertSt.setString(1, programmingLang);
                 insertSt.setString(2, level);
                 insertSt.addBatch();
