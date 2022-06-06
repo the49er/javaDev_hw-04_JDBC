@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-class Project {
+public class Project {
     private long id;
     private String name;
     private String description;

@@ -5,6 +5,11 @@ target
 
 ### files ###
 MIRO_JDBC.txt
+select.sql
+testDataBase.mv.db
+testDataBase.trace.db
 
-### files ###
+### dirs ###
 h2
+db
+files/out

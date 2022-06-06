@@ -10,24 +10,3 @@ INSERT INTO new`_table (name) VALUES ('Maxim'), ('Stepan'), ('Olga'); [42000-212
 2022-05-21 20:53:51 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "NEW_TABLE" already exists; SQL statement:
 CREATE TABLE new_table (id BIGINT NOT NULL AUTO_INCREMENT, name VARCHAR(100) NOT NULL, PRIMARY KEY (id)) [42101-212]
-2022-05-25 15:45:01 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Schema "HOMEWORK_3_1" not found; SQL statement:
-DROP TABLE IF EXISTS homework_3_1.new_table [90079-212]
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:632)
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
-	at org.h2.message.DbException.get(DbException.java:223)
-	at org.h2.message.DbException.get(DbException.java:199)
-	at org.h2.command.Parser.getSchema(Parser.java:1052)
-	at org.h2.command.Parser.getSchema(Parser.java:1058)
-	at org.h2.command.Parser.parseDrop(Parser.java:2212)
-	at org.h2.command.Parser.parsePrepared(Parser.java:776)
-	at org.h2.command.Parser.parse(Parser.java:691)
-	at org.h2.command.Parser.parse(Parser.java:661)
-	at org.h2.command.Parser.prepareCommand(Parser.java:568)
-	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:631)
-	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:554)
-	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116)
-	at org.h2.jdbc.JdbcStatement.executeUpdateInternal(JdbcStatement.java:186)
-	at org.h2.jdbc.JdbcStatement.executeUpdate(JdbcStatement.java:143)
-	at com.goit.javadev.feature.storage.Storage.executeUpdate(Storage.java:49)
-	at com.goit.javadev.AppConnectionDemoTest.main(AppConnectionDemoTest.java:21)

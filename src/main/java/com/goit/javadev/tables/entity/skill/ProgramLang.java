@@ -9,7 +9,7 @@ public enum ProgramLang {
     javaScript("JavaScript");
     private String text;
 
-    ProgramLang(String text){
+    ProgramLang(String text) {
         this.text = text;
     }
 
@@ -33,23 +33,27 @@ public enum ProgramLang {
         }
     }
 
-    public static String getFromString(String lang){
+    public static ProgramLang getEnumFromString(String lang) {
         for (ProgramLang pl : ProgramLang.values()) {
-            if(pl.text.equalsIgnoreCase(lang)) {
-                return pl.getProgLang();
+            if (pl.text.equalsIgnoreCase(lang)) {
+                return pl;
             }
         }
         throw new NoSuchLanguageException(lang);
     }
 
-    public static String getMsg(){
+    public static String getFromString(String lang) {
+        return getEnumFromString(lang).getProgLang();
+    }
+
+    public static String getMsg() {
         StringBuilder sb = new StringBuilder();
 
-        for(ProgramLang pl: ProgramLang.values()){
+        for (ProgramLang pl : ProgramLang.values()) {
             sb.append(pl.getProgLang());
             sb.append(", ");
         }
-        String result = sb.substring(0, sb.length()-2);
+        String result = sb.substring(0, sb.length() - 2);
         return result;
     }
 }

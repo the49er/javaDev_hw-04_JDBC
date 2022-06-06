@@ -15,12 +15,12 @@ public class CompTest {
         CompanyDaoService companyDbService = new CompanyDaoService(connection);
         //companyDbService.createNewCompaniesFromJsonFile(jsonFileCompIn);
         Company company5 = new Company(1, "SoftServ", "Software");
-        companyDbService.insertNewCompany(company5);
-        System.out.println(companyDbService.insertNewCompany(company5));
+        companyDbService.insertNewEntity(company5);
+        System.out.println(companyDbService.insertNewEntity(company5));
 
         //companyDbService.insertNewCompany(company1);
         //System.out.println(companyDbService.insertNewCompany(company1));
-        System.out.println(companyDbService.getCompanyById(1));
+        System.out.println(companyDbService.getEntityById(1));
         //Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
 
 //        Company company1 = new Company(1, "GameSoft", "Game Software");

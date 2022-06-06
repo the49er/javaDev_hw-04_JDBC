@@ -1,1 +1,0 @@
-DROP TABLE `homework_4`.`companies`, `homework_4`.`company_customer`, `homework_4`.`customers`, `homework_4`.`developer_project`, `homework_4`.`developer_skill`, `homework_4`.`developers`, `homework_4`.`flyway_schema_history`, `homework_4`.`projects`, `homework_4`.`skills`;

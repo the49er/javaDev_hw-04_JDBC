@@ -4,6 +4,8 @@ import com.goit.javadev.exception.DaoException;
 import com.goit.javadev.tables.entity.crudEntityDAO;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
+import org.h2.message.DbException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,7 +31,7 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
     PreparedStatement getAllEntitiesSt;
     PreparedStatement deleteById;
     PreparedStatement clearTableSt;
-    private PreparedStatement getMaxIdSt;
+    PreparedStatement getMaxIdSt;
 
 
     public DeveloperDaoService(Connection connection) {
@@ -90,9 +92,9 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
             }
             deleteById.executeBatch();
             if (ids.length > 1) {
-                log.info("Attention! " + ids.length + " records were deleted");
+                log.info("Attention! " + result + " records were deleted");
             } else if (ids.length == 1) {
-                log.info("Attention! " + ids.length + " record was deleted");
+                log.info("Attention! " + result + " record was deleted");
             }
             return result;
         } catch (DaoException | SQLException e) {
@@ -106,16 +108,18 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
         try {
             deleteById.setLong(1, id);
             deleteById.executeUpdate();
+            log.info("Developer with id: " + id + " has been deleted");
             return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
     public long insertNewEntity(Developer developer) {
+        long id = 0;
         try {
             insertSt.setString(1, developer.getName());
             insertSt.setInt(2, developer.getAge());
@@ -124,18 +128,24 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
             insertSt.setInt(5, developer.getCompanyId());
             insertSt.executeUpdate();
 
-        } catch (DaoException | SQLException exception) {
-            exception.printStackTrace();
+        } catch (JdbcSQLIntegrityConstraintViolationException exception){
+            System.out.println("Null not allowed");;
+            return -1;
+        } catch (NullPointerException | SQLException exception) {
+            System.out.println("Developer was not created");
+            return -1;
         }
-        long id = 0;
+
         try (ResultSet rs = getMaxIdSt.executeQuery()) {
             while (rs.next()) {
                 id = rs.getLong("maxId");
             }
-        } catch (SQLException e) {
+            log.info("Developer with id: " + id + " has been created");
+            return id;
+        } catch (NullPointerException | SQLException e) {
             e.printStackTrace();
+            return -1;
         }
-        return id;
     }
 
     @Override
@@ -146,8 +156,8 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -201,8 +211,8 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
             return developerList.size();
         } catch (DaoException | SQLException ex) {
             ex.printStackTrace();
+            return -1;
         }
-        return -1;
     }
 
     @Override
@@ -214,11 +224,13 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
             updateEntityFieldsSt.setInt(4, developer.getSalary());
             updateEntityFieldsSt.setInt(5, developer.getCompanyId());
             updateEntityFieldsSt.setLong(6, id);
-            return updateEntityFieldsSt.executeUpdate() == 1;
+            updateEntityFieldsSt.executeUpdate();
+            log.info("Developer with id: " + id + " has been updated");
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -238,16 +250,14 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
                 developer.setGender(Developer.Gender.valueOf(rs.getNString("gender")));
                 developer.setSalary(rs.getInt("salary"));
                 developer.setCompanyId(rs.getInt("company_id"));
-
             }
             log.info("get Developer by id: " + id);
             return developer;
 
         } catch (DaoException | SQLException e) {
             e.printStackTrace();
-
+            return null;
         }
-        return null;
     }
 
     public List<Developer> getDeveloperBySpecificFieldLike(String query) throws SQLException {
@@ -256,6 +266,7 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
         return getDevelopers(getBySpecificFieldLikeSt);
     }
 
+    @Override
     public List<Developer> getAllEntities() {
         return getDevelopers(getAllEntitiesSt);
 
@@ -278,7 +289,7 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
             return developers;
         } catch (DaoException | SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

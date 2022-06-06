@@ -1,5 +1,6 @@
 package com.goit.javadev;
 
+import com.goit.javadev.feature.storage.StorageTemp;
 import com.goit.javadev.tables.entity.company.CompanyDaoService;
 import com.goit.javadev.tables.entity.customer.CustomerDaoService;
 import com.goit.javadev.tables.entity.developer.DeveloperDaoService;
@@ -11,8 +12,14 @@ import com.goit.javadev.tables.manytomany.company_customer.CompanyCustomerDaoSer
 import com.goit.javadev.tables.manytomany.developer_project.DeveloperProjectDaoService;
 import com.goit.javadev.tables.manytomany.developer_skill.DeveloperSkillDaoService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
 
 public class ProjectCapitalManagement {
     public static void main(String[] args) throws SQLException {
@@ -26,18 +33,31 @@ public class ProjectCapitalManagement {
         String devProjectKeysJsonFileIn = "files/in/developer_project_keys.json"; // developer_project
         String devSkillKeysJsonFileIn = "files/in/developer_skill_keys.json"; // developer_skill
 
-        //DataBaseInitialisation
+        //input URL, USER and PASSWORD from your DataBase
+        String connectionUrl = "jdbc:mysql://localhost:3306/homework_4";
+        String connectionUser = "root";
+        System.out.println("Input password for user: " + connectionUser + "\r");
+        String connectionUserPassword = new Scanner(System.in).nextLine();
+        String pathToFile = "sql/initDB.sql";
+
+        StorageTemp storageTemp = new StorageTemp(connectionUrl, connectionUser,
+                connectionUserPassword, pathToFile);
+        storageTemp.executeUpdates();
+
+
+
+        //DataBaseInitialisation with test_user
         Storage storage = Storage.getInstance();
         Connection connection = storage.getConnection();
         new DataBaseInitService().initDbFlyWay(storage);
 
         //population of companies table
         CompanyDaoService companyDbService = new CompanyDaoService(connection);
-        companyDbService.insertNewCompaniesFromJsonFile(companiesJsonFileIn);
+        companyDbService.insertEntitiesFromJsonFile(companiesJsonFileIn);
 
         //population of developers table
-        DeveloperDaoService developerDbService = new DeveloperDaoService(connection);
-        developerDbService.insertEntitiesFromJsonFile(developersJsonFileIn);
+        DeveloperDaoService developerDaoService = new DeveloperDaoService(connection);
+        developerDaoService.insertEntitiesFromJsonFile(developersJsonFileIn);
 
         //population of customers table
         CustomerDaoService customerDaoService = new CustomerDaoService(connection);

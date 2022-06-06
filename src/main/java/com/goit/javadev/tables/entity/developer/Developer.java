@@ -12,12 +12,12 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class Developer {
-    private long id;
-    private String name;
-    private int age;
-    private Gender gender;
-    private int salary;
-    private int companyId;
+    long id;
+    String name;
+    int age;
+    Gender gender;
+    int salary;
+    int companyId;
 
     public enum Gender {
         male,

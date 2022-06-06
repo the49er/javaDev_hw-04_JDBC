@@ -64,16 +64,16 @@ public class ProjectDaoService implements crudEntityDAO<Project> {
             clearTableSt = connection.prepareStatement(
                     "DELETE FROM " + TABLE_NAME
             );
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
 
     @Override
-    public int deleteEntitiesFromListById (long[] ids) {
+    public int deleteEntitiesFromListById(long[] ids) {
         int result = 0;
-        try{
-            for (long id: ids) {
+        try {
+            for (long id : ids) {
                 deleteById.setLong(1, id);
                 deleteById.addBatch();
                 result++;
@@ -85,14 +85,14 @@ public class ProjectDaoService implements crudEntityDAO<Project> {
                 log.info("Attention! " + ids.length + " record was deleted");
             }
             return result;
-        }catch (DaoException | SQLException e) {
+        } catch (DaoException | SQLException e) {
             e.printStackTrace();
             return -1;
         }
     }
 
     @Override
-    public boolean deleteById (long id) {
+    public boolean deleteById(long id) {
         try {
             deleteById.setLong(1, id);
             deleteById.executeUpdate();
@@ -100,8 +100,8 @@ public class ProjectDaoService implements crudEntityDAO<Project> {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -114,16 +114,16 @@ public class ProjectDaoService implements crudEntityDAO<Project> {
             insertSt.setInt(4, project.getCustomerId());
             insertSt.setInt(5, project.getCompanyId());
             insertSt.executeUpdate();
-        }catch (DaoException | SQLException e) {
+        } catch (DaoException | SQLException e) {
             e.printStackTrace();
         }
-
 
         try (ResultSet rs = getMaxIdSt.executeQuery()) {
             rs.next();
             id = rs.getLong("maxId");
+            log.info("Project with id: " + id + " has been created");
             return id;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return -1;
         }
@@ -191,10 +191,10 @@ public class ProjectDaoService implements crudEntityDAO<Project> {
                 log.info("Insert " + projectList.size() + "new record");
             }
             return projectList.size();
-        }catch (DaoException | SQLException e) {
+        } catch (DaoException | SQLException e) {
             e.printStackTrace();
+            return -1;
         }
-        return -1;
     }
 
     @Override
@@ -206,11 +206,13 @@ public class ProjectDaoService implements crudEntityDAO<Project> {
             updateEntityFieldsSt.setInt(4, project.getCustomerId());
             updateEntityFieldsSt.setInt(5, project.getCompanyId());
             updateEntityFieldsSt.setLong(6, id);
-            return updateEntityFieldsSt.executeUpdate() == 1;
+            updateEntityFieldsSt.executeUpdate();
+            log.info("Project with id: " + id + " has been updated");
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -234,13 +236,13 @@ public class ProjectDaoService implements crudEntityDAO<Project> {
             project.setCompanyId(rs.getInt("company_id"));
             log.info("get Project by id: " + id);
             return project;
-        }catch (DaoException | SQLException e) {
+        } catch (DaoException | SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<Project> getAllEntities(){
+    public List<Project> getAllEntities() {
         return getProjects(getAllEntitiesSt);
     }
 
@@ -252,17 +254,16 @@ public class ProjectDaoService implements crudEntityDAO<Project> {
                 project.setId(rs.getLong("id"));
                 project.setName(rs.getNString("name"));
                 project.setDescription(rs.getString("description"));
-                project.setDate(LocalDate.parse(rs.getString("dateContract")));
+                project.setDate(LocalDate.parse(rs.getString("date_contract")));
                 project.setCustomerId(rs.getInt("customer_id"));
                 project.setCompanyId(rs.getInt("company_id"));
                 projects.add(project);
-
             }
             log.info("Received list of: " + projects.size() + " Projects");
             return projects;
-        }catch (DaoException | SQLException e){
+        } catch (DaoException | SQLException e) {
             e.printStackTrace();
-            return  null;
+            return null;
         }
     }
 }

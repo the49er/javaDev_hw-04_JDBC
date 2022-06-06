@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,11 +80,12 @@ public class SkillDaoService implements crudEntityDAO<Skill> {
             insertSt.executeUpdate();
             rs.next();
             id = rs.getLong("maxId");
+            log.info("Skill with id: " + id + " has been created");
             return id;
         } catch (DaoException | SQLException e) {
             e.printStackTrace();
+            return -1;
         }
-        return -1;
     }
 
     public boolean clearTable() {
@@ -93,8 +95,8 @@ public class SkillDaoService implements crudEntityDAO<Skill> {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -147,7 +149,17 @@ public class SkillDaoService implements crudEntityDAO<Skill> {
 
     @Override
     public boolean updateEntityFieldsById(Skill element, long id) {
-        return false;
+        try {
+            updateEntityFieldsSt.setString(1, element.getProgramLang().getProgLang());
+            updateEntityFieldsSt.setString(2, element.getSkillLevel().getLevel());
+            updateEntityFieldsSt.setLong(3, id);
+            updateEntityFieldsSt.executeUpdate();
+            log.info("Skill with id: " + id + " has been updated");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 
@@ -171,19 +183,53 @@ public class SkillDaoService implements crudEntityDAO<Skill> {
 
         } catch (DaoException | SQLException e) {
             e.printStackTrace();
+            return null;
+        }
+    }
 
+    @Override
+    public List<Skill> getAllEntities() {
+        return getSkills(getAllEntitiesSt);
+    }
+
+    private List<Skill> getSkills(PreparedStatement st) {
+        try (ResultSet rs = st.executeQuery()) {
+            List<Skill> skills = new ArrayList<>();
+            while (rs.next()) {
+                Skill skill = new Skill();
+                skill.setId(rs.getLong("id"));
+                skill.setProgramLang(ProgramLang.getEnumFromString(rs.getNString("programming_lang")));
+                skill.setSkillLevel(SkillLevel.getEnumFromString(rs.getString("level")));
+                skills.add(skill);
+            }
+            log.info("Received list of: " + skills.size() + " Skills");
+            return skills;
+        } catch (DaoException | SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    public List<Skill> getAllEntities() {
-        return null;
-    }
-
-    @Override
     public int deleteEntitiesFromListById(long[] ids) {
-        return 0;
+        int result = 0;
+        try {
+            for (long id : ids) {
+                deleteById.setLong(1, id);
+                deleteById.addBatch();
+                result++;
+            }
+            deleteById.executeBatch();
+            if (result > 1) {
+                log.info("Attention! " + result + " records were deleted");
+            } else if (result == 1) {
+                log.info("Attention! " + ids.length + " record was deleted");
+            }
+            return result;
+        } catch (DaoException | SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override
@@ -195,8 +241,7 @@ public class SkillDaoService implements crudEntityDAO<Skill> {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
-
     }
 }

@@ -21,56 +21,60 @@ import java.util.stream.Collectors;
 public class CustomerDaoService implements crudEntityDAO<Customer> {
 
     private static final String TABLE_NAME = "`homework_4`.customers";
-    private PreparedStatement insertSt;
-    private PreparedStatement updateContractEntityFieldsSt;
-    private PreparedStatement updateContractNameFieldSt;
-    private PreparedStatement getEntityByIdSt;
-    private PreparedStatement getBySpecificFieldLikeSt;
-    private PreparedStatement getAllEntitiesSt;
-    private PreparedStatement deleteById;
-    private PreparedStatement clearTableSt;
-    private PreparedStatement getMaxIdSt;
+    PreparedStatement insertSt;
+    PreparedStatement updateContractEntityFieldsSt;
+    PreparedStatement updateContractNameFieldSt;
+    PreparedStatement getEntityByIdSt;
+    PreparedStatement getBySpecificFieldLikeSt;
+    PreparedStatement getAllEntitiesSt;
+    PreparedStatement deleteById;
+    PreparedStatement clearTableSt;
+    PreparedStatement getMaxIdSt;
 
 
-    public CustomerDaoService(Connection connection) throws SQLException {
+    public CustomerDaoService(Connection connection) {
+        try {
 
-        getMaxIdSt = connection.prepareStatement(
-                "SELECT max(id) AS maxId FROM " + TABLE_NAME
-        );
+            getMaxIdSt = connection.prepareStatement(
+                    "SELECT max(id) AS maxId FROM " + TABLE_NAME
+            );
 
-        insertSt = connection.prepareStatement(
-                "INSERT INTO " + TABLE_NAME + " (name, business_sphere) VALUES (?, ?)"
-        );
+            insertSt = connection.prepareStatement(
+                    "INSERT INTO " + TABLE_NAME + " (name, business_sphere) VALUES (?, ?)"
+            );
 
-        updateContractEntityFieldsSt = connection.prepareStatement(
-                "UPDATE " + TABLE_NAME + " SET name = ?, business_sphere = ? WHERE id = ?"
-        );
+            updateContractEntityFieldsSt = connection.prepareStatement(
+                    "UPDATE " + TABLE_NAME + " SET name = ?, business_sphere = ? WHERE id = ?"
+            );
 
-        updateContractNameFieldSt = connection.prepareStatement(
-                "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?"
-        );
+            updateContractNameFieldSt = connection.prepareStatement(
+                    "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?"
+            );
 
-        getEntityByIdSt = connection.prepareStatement(
-                "SELECT id, name, business_sphere FROM " +
-                        TABLE_NAME + " WHERE id = ?"
-        );
+            getEntityByIdSt = connection.prepareStatement(
+                    "SELECT id, name, business_sphere FROM " +
+                            TABLE_NAME + " WHERE id = ?"
+            );
 
-        getBySpecificFieldLikeSt = connection.prepareStatement(
-                "SELECT id, name, business_sphere FROM " +
-                        TABLE_NAME + " WHERE name LIKE ?"
-        );
+            getBySpecificFieldLikeSt = connection.prepareStatement(
+                    "SELECT id, name, business_sphere FROM " +
+                            TABLE_NAME + " WHERE name LIKE ?"
+            );
 
-        getAllEntitiesSt = connection.prepareStatement(
-                "SELECT id, name, business_sphere FROM " + TABLE_NAME
-        );
+            getAllEntitiesSt = connection.prepareStatement(
+                    "SELECT id, name, business_sphere FROM " + TABLE_NAME
+            );
 
-        deleteById = connection.prepareStatement(
-                "DELETE FROM " + TABLE_NAME + " WHERE ID = ?"
-        );
+            deleteById = connection.prepareStatement(
+                    "DELETE FROM " + TABLE_NAME + " WHERE ID = ?"
+            );
 
-        clearTableSt = connection.prepareStatement(
-                "DELETE FROM " + TABLE_NAME
-        );
+            clearTableSt = connection.prepareStatement(
+                    "DELETE FROM " + TABLE_NAME
+            );
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -84,9 +88,9 @@ public class CustomerDaoService implements crudEntityDAO<Customer> {
             }
             deleteById.executeBatch();
             if (ids.length > 1) {
-                log.info("Attention! " + ids.length + " records were deleted");
+                log.info("Attention! " + result + " records were deleted");
             } else if (ids.length == 1) {
-                log.info("Attention! " + ids.length + " record was deleted");
+                log.info("Attention! " + result + " record was deleted");
             }
             return result;
         } catch (DaoException | SQLException ex) {
@@ -104,8 +108,8 @@ public class CustomerDaoService implements crudEntityDAO<Customer> {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -119,6 +123,7 @@ public class CustomerDaoService implements crudEntityDAO<Customer> {
             try (ResultSet rs = getMaxIdSt.executeQuery()) {
                 rs.next();
                 id = rs.getLong("maxId");
+                log.info("Developer with id: " + id + " has been created");
             }
             return id;
         } catch (DaoException | SQLException ex) {
@@ -167,10 +172,10 @@ public class CustomerDaoService implements crudEntityDAO<Customer> {
     @Override
     public int insertNewEntities(List<Customer> customerList) {
         try {
-            for (int i = 0; i < customerList.size(); i++) {
+            for (Customer customer : customerList) {
 
-                String name = customerList.get(i).getName();
-                String business_sphere = customerList.get(i).getBusinessSphere();
+                String name = customer.getName();
+                String business_sphere = customer.getBusinessSphere();
 
                 insertSt.setString(1, name);
                 insertSt.setString(2, business_sphere);
@@ -195,11 +200,13 @@ public class CustomerDaoService implements crudEntityDAO<Customer> {
             updateContractEntityFieldsSt.setString(1, customer.getName());
             updateContractEntityFieldsSt.setString(2, customer.getBusinessSphere());
             updateContractEntityFieldsSt.setLong(3, id);
-            return updateContractEntityFieldsSt.executeUpdate() == 1;
+            updateContractEntityFieldsSt.executeUpdate();
+            log.info("Customer with id: " + id + " has been updated");
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -226,7 +233,7 @@ public class CustomerDaoService implements crudEntityDAO<Customer> {
         }
     }
 
-
+    @Override
     public List<Customer> getAllEntities() {
         return getCustomers(getAllEntitiesSt);
     }

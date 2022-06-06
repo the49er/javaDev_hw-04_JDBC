@@ -16,13 +16,14 @@ import static com.goit.javadev.tables.entity.developer.Developer.Gender.female;
 import static com.goit.javadev.tables.entity.developer.Developer.Gender.male;
 import static com.goit.javadev.tables.entity.developer.Developer.Gender.other;
 
-
 class DeveloperDaoServiceTest {
     private Connection connection;
     private DeveloperDaoService developerDaoService;
     Developer developerTest1;
     Developer developerTest2;
     Developer developerTest3;
+    Developer developerTestNullName;
+    Developer developerTestNullGender;
     String jsonFilePath;
 
     @BeforeEach
@@ -39,6 +40,8 @@ class DeveloperDaoServiceTest {
         developerTest1 = new Developer(1, "TestName1", 10, male, 1000, 1);
         developerTest2 = new Developer(2, "TestName2", 15, female, 2000, 2);
         developerTest3 = new Developer(3, "TestName3", 20, other, 3000, 3);
+        developerTestNullName = new Developer(4, null, 20, male, 3000, 3);
+        developerTestNullGender = new Developer(5, "TestName5", 20, null, 3000, 3);
         jsonFilePath = "src/test/resource/json/test_developers.json";
         developerDaoService.clearTable();
     }
@@ -54,6 +57,13 @@ class DeveloperDaoServiceTest {
         long id = developerDaoService.insertNewEntity(developerTest1);
         Developer createdDeveloper = developerDaoService.getEntityById(id);
         Assertions.assertEquals(id, createdDeveloper.getId());
+    }
+
+    @Test
+    void testThatEntityDidNotCreated() {
+        long idExpected = developerDaoService.insertNewEntity(developerTestNullName);
+        long idActual = developerDaoService.insertNewEntity(developerTestNullGender);
+        Assertions.assertEquals(idExpected, idActual);
     }
 
     @Test

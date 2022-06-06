@@ -1,10 +1,7 @@
 package com.goit.javadev.tables.entity.skill;
 
 import com.goit.javadev.feature.storage.Storage;
-import com.google.gson.Gson;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -17,10 +14,12 @@ public class SkillTest {
         Storage storage = Storage.getInstance();
         Connection connection = storage.getConnection();
 
+        System.out.println(ProgramLang.valueOf("java"));
+
         System.out.println(SkillLevel.junior.getLevel());
         String str = "juNior";
         String str2 = "Seneer";
-        System.out.println(SkillLevel.getFromString(str2));
+        System.out.println(ProgramLang.getFromString(str2));
         System.out.println(Arrays.toString(SkillLevel.values()));
 
         System.out.println(SkillLevel.getMsg());
