@@ -96,7 +96,7 @@ public class CompanyDaoService implements crudEntityDAO<Company> {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        long id = 0;
+        long id;
 
         try (ResultSet rs = getMaxIdSt.executeQuery()) {
             rs.next();

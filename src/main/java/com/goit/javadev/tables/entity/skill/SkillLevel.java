@@ -1,13 +1,12 @@
 package com.goit.javadev.tables.entity.skill;
 
 import com.goit.javadev.exception.NoSuchLanguageException;
-import com.goit.javadev.exception.NoSuchLevelException;
 
 public enum SkillLevel {
     junior("Junior"),
     middle("Middle"),
     senior("Senior");
-    private String text;
+    String text;
 
 
     SkillLevel(String text){
@@ -50,7 +49,6 @@ public enum SkillLevel {
             sb.append(sl.getLevel());
             sb.append(", ");
         }
-        String result = sb.substring(0, sb.length()-2);
-        return result;
+        return sb.substring(0, sb.length()-2);
     }
 }

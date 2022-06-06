@@ -5,7 +5,6 @@ import com.goit.javadev.tables.entity.crudEntityDAO;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
-import org.h2.message.DbException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -129,7 +128,7 @@ public class DeveloperDaoService implements crudEntityDAO<Developer> {
             insertSt.executeUpdate();
 
         } catch (JdbcSQLIntegrityConstraintViolationException exception){
-            System.out.println("Null not allowed");;
+            System.out.println("Null not allowed");
             return -1;
         } catch (NullPointerException | SQLException exception) {
             System.out.println("Developer was not created");

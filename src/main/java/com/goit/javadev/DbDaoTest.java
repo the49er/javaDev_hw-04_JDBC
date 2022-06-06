@@ -1,8 +1,6 @@
 package com.goit.javadev;
 
 import com.goit.javadev.feature.storage.Storage;
-import com.goit.javadev.tables.entity.company.CompanyDaoService;
-import com.goit.javadev.tables.entity.customer.CustomerDaoService;
 import com.goit.javadev.tables.entity.developer.Developer;
 import com.goit.javadev.tables.entity.developer.DeveloperDaoService;
 import com.goit.javadev.tables.entity.project.Project;
@@ -22,8 +20,6 @@ public class DbDaoTest {
         Connection connection = storage.getConnection();
 
         DeveloperDaoService developerDaoService = new DeveloperDaoService(connection);
-        CompanyDaoService companyDaoService = new CompanyDaoService(connection);
-        CustomerDaoService customerDaoService = new CustomerDaoService(connection);
         ProjectDaoService projectDaoService = new ProjectDaoService(connection);
         SkillDaoService skillDaoService = new SkillDaoService(connection);
 

@@ -7,7 +7,7 @@ public enum ProgramLang {
     cSharp("C#"),
     cPlus("C++"),
     javaScript("JavaScript");
-    private String text;
+    String text;
 
     ProgramLang(String text) {
         this.text = text;
@@ -53,8 +53,7 @@ public enum ProgramLang {
             sb.append(pl.getProgLang());
             sb.append(", ");
         }
-        String result = sb.substring(0, sb.length() - 2);
-        return result;
+        return sb.substring(0, sb.length() - 2);
     }
 }
 

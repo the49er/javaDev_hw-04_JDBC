@@ -12,17 +12,12 @@ import com.goit.javadev.tables.manytomany.company_customer.CompanyCustomerDaoSer
 import com.goit.javadev.tables.manytomany.developer_project.DeveloperProjectDaoService;
 import com.goit.javadev.tables.manytomany.developer_skill.DeveloperSkillDaoService;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Scanner;
 
 public class ProjectCapitalManagement {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
 
         String companiesJsonFileIn = "files/in/companies.json"; //companies
         String developersJsonFileIn = "files/in/developers.json"; // developers
