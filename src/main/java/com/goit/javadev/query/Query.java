@@ -164,7 +164,7 @@ public class Query {
 
     public void getAllDevsBySkillLevel(String skillLevel) {
         try {
-            devsSkillLevelSt.setString(1, SkillLevel.getFromString(skillLevel));//enum check
+            devsSkillLevelSt.setString(1, SkillLevel.getEnumValueFromString(skillLevel));//enum check
         } catch (SQLException e) {
             e.printStackTrace();
         }

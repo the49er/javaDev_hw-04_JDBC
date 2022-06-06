@@ -1,4 +1,5 @@
 package com.goit.javadev.tables.entity.skill;
+
 import com.goit.javadev.exception.NoSuchLevelException;
 
 public enum SkillLevel {
@@ -8,7 +9,7 @@ public enum SkillLevel {
     String text;
 
 
-    SkillLevel(String text){
+    SkillLevel(String text) {
         this.text = text;
     }
 
@@ -37,17 +38,17 @@ public enum SkillLevel {
         throw new NoSuchLevelException(lang);
     }
 
-    public static String getFromString(String lang) {
+    public static String getEnumValueFromString(String lang) {
         return getEnumFromString(lang).getLevel();
     }
 
-    public static String getMsg(){
+    public static String getMsg() {
         StringBuilder sb = new StringBuilder();
 
-        for(SkillLevel sl: SkillLevel.values()){
+        for (SkillLevel sl : SkillLevel.values()) {
             sb.append(sl.getLevel());
             sb.append(", ");
         }
-        return sb.substring(0, sb.length()-2);
+        return sb.substring(0, sb.length() - 2);
     }
 }

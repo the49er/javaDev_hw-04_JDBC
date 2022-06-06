@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.goit.javadev.tables.entity.skill.SkillLevel.getEnumFromString;
+
 @Slf4j
 public class SkillDaoService implements crudEntityDAO<Skill> {
 
@@ -175,8 +177,8 @@ public class SkillDaoService implements crudEntityDAO<Skill> {
             Skill skill = new Skill();
             while (rs.next()) {
                 skill.setId(id);
-                skill.setProgramLang(ProgramLang.valueOf(rs.getNString("programming_lang")));
-                skill.setSkillLevel(SkillLevel.valueOf(rs.getString("level")));
+                skill.setProgramLang(ProgramLang.getEnumFromString(rs.getNString("programming_lang")));
+                skill.setSkillLevel(SkillLevel.getEnumFromString(rs.getString("level")));
             }
             log.info("get Skill by id: " + id);
             return skill;
@@ -199,7 +201,7 @@ public class SkillDaoService implements crudEntityDAO<Skill> {
                 Skill skill = new Skill();
                 skill.setId(rs.getLong("id"));
                 skill.setProgramLang(ProgramLang.getEnumFromString(rs.getNString("programming_lang")));
-                skill.setSkillLevel(SkillLevel.getEnumFromString(rs.getString("level")));
+                skill.setSkillLevel(getEnumFromString(rs.getString("level")));
                 skills.add(skill);
             }
             log.info("Received list of: " + skills.size() + " Skills");
