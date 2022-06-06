@@ -23,7 +23,7 @@ public class StorageTemp {
     }
 
     private String[] getSqlArr() {
-        String sqlString = null;
+        String sqlString = "";
         try {
             sqlString = String.join(
                     "\n",
