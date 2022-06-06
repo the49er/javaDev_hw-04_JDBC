@@ -15,12 +15,13 @@ public class StorageTemp {
     public StorageTemp(String connectionUrl, String connectionUser, String connectionUserPassword, String initDbFilePath) {
         this.initDbFilePath = initDbFilePath;
         try {
-            this.connection = DriverManager.getConnection(connectionUrl,
+            connection = DriverManager.getConnection(connectionUrl,
                     connectionUser, connectionUserPassword);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     private String[] getSqlArr() {
         String sqlString = null;
         try {
@@ -31,8 +32,7 @@ public class StorageTemp {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String[] sqlArr = sqlString.split("\n");
-        return sqlArr;
+        return sqlString.split("\n");
 
     }
 
@@ -45,6 +45,7 @@ public class StorageTemp {
             return -1;
         }
     }
+
     public int executeUpdates() {
         if (getSqlArr().length > 0) {
             for (String sql : getSqlArr()) {

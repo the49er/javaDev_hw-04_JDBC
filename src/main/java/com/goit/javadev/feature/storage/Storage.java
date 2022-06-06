@@ -41,7 +41,6 @@ public class Storage {
         catch (Exception ex){
             ex.printStackTrace();
         }
-
     }
 
     public int executeUpdate(String sql){
