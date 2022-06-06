@@ -1,6 +1,5 @@
 package com.goit.javadev.tables.entity.skill;
-
-import com.goit.javadev.exception.NoSuchLanguageException;
+import com.goit.javadev.exception.NoSuchLevelException;
 
 public enum SkillLevel {
     junior("Junior"),
@@ -35,7 +34,7 @@ public enum SkillLevel {
                 return sl;
             }
         }
-        throw new NoSuchLanguageException(lang);
+        throw new NoSuchLevelException(lang);
     }
 
     public static String getFromString(String lang) {
