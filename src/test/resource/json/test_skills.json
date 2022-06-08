@@ -1,62 +1,62 @@
 [
   {
     "id": 1,
-    "programLang": "java",
-    "skillLevel": "junior"
+    "programLang": "JAVA",
+    "skillLevel": "JUNIOR"
   },
   {
     "id": 2,
-    "programLang": "java",
-    "skillLevel": "middle"
+    "programLang": "JAVA",
+    "skillLevel": "MIDDLE"
   },
   {
     "id": 3,
-    "programLang": "java",
-    "skillLevel": "senior"
+    "programLang": "JAVA",
+    "skillLevel": "SENIOR"
   },
   {
     "id": 4,
-    "programLang": "cPlus",
-    "skillLevel": "senior"
+    "programLang": "C_PLUS",
+    "skillLevel": "SENIOR"
   },
   {
     "id": 5,
-    "programLang": "cPlus",
-    "skillLevel": "middle"
+    "programLang": "C_PLUS",
+    "skillLevel": "MIDDLE"
   },
   {
     "id": 6,
-    "programLang": "cPlus",
-    "skillLevel": "junior"
+    "programLang": "C_PLUS",
+    "skillLevel": "JUNIOR"
   },
   {
     "id": 7,
-    "programLang": "cSharp",
-    "skillLevel": "junior"
+    "programLang": "C_SHARP",
+    "skillLevel": "JUNIOR"
   },
   {
     "id": 8,
-    "programLang": "cSharp",
-    "skillLevel": "senior"
+    "programLang": "C_SHARP",
+    "skillLevel": "SENIOR"
   },
   {
     "id": 9,
-    "programLang": "cSharp",
-    "skillLevel": "middle"
+    "programLang": "C_SHARP",
+    "skillLevel": "MIDDLE"
   },
   {
     "id": 10,
-    "programLang": "javaScript",
-    "skillLevel": "junior"
+    "programLang": "JAVA_SCRIPT",
+    "skillLevel": "JUNIOR"
   },
   {
     "id": 11,
-    "programLang": "javaScript",
-    "skillLevel": "senior"
+    "programLang": "JAVA_SCRIPT",
+    "skillLevel": "SENIOR"
   },
   {
     "id": 12,
-    "programLang": "javaScript",
-    "skillLevel": "middle"
+    "programLang": "JAVA_SCRIPT",
+    "skillLevel": "MIDDLE"
   }
 ]

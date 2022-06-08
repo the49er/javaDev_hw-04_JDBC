@@ -3,11 +3,7 @@
     "id": 1,
     "name": "CRM",
     "description": "Customer Relationship Management",
-    "date": {
-      "year": 2021,
-      "month": 1,
-      "day": 24
-    },
+    "date": "2021-01-24",
     "customerId": 1,
     "companyId": 4
   },
@@ -15,11 +11,7 @@
     "id": 2,
     "name": "ERP",
     "description": "Enterprise Resource Planning",
-    "date": {
-      "year": 2022,
-      "month": 4,
-      "day": 12
-    },
+    "date": "2021-04-12",
     "customerId": 2,
     "companyId": 3
   },
@@ -27,11 +19,7 @@
     "id": 3,
     "name": "SCM",
     "description": "Software Configuration Management",
-    "date": {
-      "year": 2019,
-      "month": 5,
-      "day": 30
-    },
+    "date": "2021-05-30",
     "customerId": 3,
     "companyId": 2
   },
@@ -39,11 +27,7 @@
     "id": 4,
     "name": "HMC",
     "description": "Human Capital Management",
-    "date": {
-      "year": 2020,
-      "month": 9,
-      "day": 16
-    },
+    "date": "2019-09-16",
     "customerId": 4,
     "companyId": 1
   }

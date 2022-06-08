@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Vitaly",
     "age": 25,
-    "gender": "male",
+    "gender": "MALE",
     "salary": 3600,
     "companyId": 1
   },
@@ -11,15 +11,15 @@
     "id": 2,
     "name": "Irina",
     "age": 31,
-    "gender": "female",
+    "gender": "FEMALE",
     "salary": 3450,
     "companyId": 2
   },
   {
     "id": 3,
-    "name": "Sabrina",
+    "name": "SABRINA",
     "age": 38,
-    "gender": "other",
+    "gender": "OTHER",
     "salary": 4750,
     "companyId": 3
   },
@@ -27,7 +27,7 @@
     "id": 4,
     "name": "Yehor",
     "age": 42,
-    "gender": "male",
+    "gender": "MALE",
     "salary": 4100,
     "companyId": 4
   },
@@ -35,7 +35,7 @@
     "id": 5,
     "name": "Sergiy",
     "age": 29,
-    "gender": "male",
+    "gender": "MALE",
     "salary": 4250,
     "companyId": 4
   },
@@ -43,7 +43,7 @@
     "id": 6,
     "name": "Olena",
     "age": 19,
-    "gender": "other",
+    "gender": "OTHER",
     "salary": 2100,
     "companyId": 1
   },
@@ -51,7 +51,7 @@
     "id": 7,
     "name": "Oksana",
     "age": 42,
-    "gender": "female",
+    "gender": "FEMALE",
     "salary": 4200,
     "companyId": 2
   },
@@ -59,7 +59,7 @@
     "id": 8,
     "name": "John",
     "age": 43,
-    "gender": "male",
+    "gender": "MALE",
     "salary": 3600,
     "companyId": 1
   },
@@ -67,7 +67,7 @@
     "id": 9,
     "name": "Dmytro",
     "age": 35,
-    "gender": "male",
+    "gender": "MALE",
     "salary": 5500,
     "companyId": 3
   },
@@ -75,7 +75,7 @@
     "id": 10,
     "name": "Helga",
     "age": 22,
-    "gender": "female",
+    "gender": "FEMALE",
     "salary": 2000,
     "companyId": 2
   }
